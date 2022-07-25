@@ -12,9 +12,7 @@ namespace GeradorBmb.App
 
         private void btnGerar_Click(object sender, EventArgs e)
         {
-            DirectoryInfo diretornoApi;
-            DirectoryInfo diretornoDomain;
-            DirectoryInfo diretornoData;
+    
             string nameClass = txtNameClass.Text;
 
             if (string.IsNullOrWhiteSpace(nameClass))
@@ -24,7 +22,12 @@ namespace GeradorBmb.App
             }
 
             nameClass = ConverterToTitleCase(nameClass);
-            Dictionary<string, string> propertys = new Dictionary<string, string>();
+            IDictionary<string, string> propertys = new Dictionary<string, string>();
+
+            propertys.Add("Idade", "int");
+            propertys.Add("Nome", "string");
+
+
             foreach (DataGridViewRow item in dgw.Rows)
             {
                 if (item.Cells[0].Value != null)
@@ -59,20 +62,20 @@ namespace GeradorBmb.App
                     {
   
                         GerarController gerarController = new(directoryInfo, nameClass);
-                        //gerarController.Gerar();
+                        gerarController.Gerar();
 
                     }
 
                     if (directoryInfo.Name.EndsWith("domain", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        GerarDomino gerarDomino = new(directoryInfo, nameClass);
-                        //gerarDomino.Gerar();
+                        GerarDomino gerarDomino = new(directoryInfo, nameClass, propertys);
+                        gerarDomino.Gerar();
                     }
 
                     if (directoryInfo.Name.EndsWith("data", StringComparison.CurrentCultureIgnoreCase))
                     {
                         GerarRepository gerarDomino = new(directoryInfo, nameClass);
-                        //gerarDomino.Gerar();
+                        gerarDomino.Gerar();
                     }
                 }
 
@@ -97,6 +100,11 @@ namespace GeradorBmb.App
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgw_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -63,6 +63,7 @@
             this.txtNameClass.Name = "txtNameClass";
             this.txtNameClass.Size = new System.Drawing.Size(549, 23);
             this.txtNameClass.TabIndex = 1;
+            this.txtNameClass.Text = "Minha classe";
             // 
             // label1
             // 
@@ -85,6 +86,7 @@
             this.dgw.RowTemplate.Height = 25;
             this.dgw.Size = new System.Drawing.Size(549, 121);
             this.dgw.TabIndex = 3;
+            this.dgw.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgw_CellContentClick);
             // 
             // Property
             // 

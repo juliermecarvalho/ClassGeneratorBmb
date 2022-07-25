@@ -4,13 +4,15 @@
     {
         private DirectoryInfo _directory;
         private string _nameClass;
+        private readonly IDictionary<string, string> _propertys;
         const string abre = "{";
         const string fecha = "}";
 
-        public GerarEntities(DirectoryInfo directoryInfo, string nameClass)
+        public GerarEntities(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _propertys = propertys;
         }
 
 
@@ -32,6 +34,11 @@
         private void Repository(DirectoryInfo directoryDeleteCommand)
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\I{_nameClass}Repository.cs");
+
+            Assistant assistant = new();
+            var p =assistant.GerarPropertys(_propertys, true);
+            var c = assistant.GerarConstrutor(_nameClass, _propertys);
+
             string linhas = @$"
 using Bmb.Core.Domain.Entities;
 
@@ -39,10 +46,8 @@ namespace {gerarNamespace(directoryDeleteCommand)};
 
 public class {_nameClass} : Entity
 {abre}
-    public {_nameClass}()
-    {abre}
-    {fecha}
-
+{p}
+{c}
 
 {fecha}
 ";
