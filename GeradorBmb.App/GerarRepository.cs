@@ -58,14 +58,26 @@
                 rdr.Close();
 
                 StreamWriter file = new(fileInfo.FullName);
-                file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;");
+
+                var strUsing = $"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;";
+                if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
+                {
+                    file.WriteLine(strUsing);
+                }
+
+                var strAddScoped = $"        serviceCollection.AddScoped<I{_nameClass}Repository, {_nameClass}Repository>();";
+                if (linhas.Exists(x => x.Trim().Contains(strAddScoped.Trim())))
+                {
+                    _passos = Passos.passo3;
+                }
+
                 foreach (var l in linhas)
                 {
                     if (_passos == Passos.passo1)
                     {
                         if (l == "    }")
                         {
-                            file.WriteLine($"        serviceCollection.AddScoped<I{_nameClass}Repository, {_nameClass}Repository>();");
+                            file.WriteLine(strAddScoped);
                             _passos = Passos.passo3;
                         }
                     }
@@ -119,7 +131,20 @@ public static class Bootstrapper
                 rdr.Close();
 
                 StreamWriter file = new(fileInfo.FullName);
-                file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Entities.v1;");
+                var strUsing = $"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Entities.v1;";
+                if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
+                {
+                    file.WriteLine(strUsing);
+                }
+
+                var strDbSet = $"    public DbSet<{_nameClass}> {_nameClass}s => Set<{_nameClass}>();";
+                if (linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
+                {
+                    _passos = Passos.passo3;
+                }
+
+               
+
                 foreach (var l in linhas)
                 {
 
@@ -127,7 +152,7 @@ public static class Bootstrapper
                     {
                         if (l.Contains("protected override void OnModelCreating(ModelBuilder modelBuilder)"))
                         {
-                            file.WriteLine($"    public DbSet<{_nameClass}> {_nameClass}s => Set<{_nameClass}>();");
+                            file.WriteLine(strDbSet);
                             _passos = Passos.passo2;
                         }
                     }
@@ -136,7 +161,6 @@ public static class Bootstrapper
                     {
                         if (string.IsNullOrWhiteSpace(l))
                         {
-                            //
                             _passos = Passos.passo3;
                         }
                     }
