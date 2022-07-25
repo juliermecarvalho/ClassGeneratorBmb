@@ -21,7 +21,7 @@ public class UpdateMinhaClasseCommandHandler : Handler<UpdateMinhaClasseCommand,
     public override async Task<UpdateMinhaClasseCommandResult?> Handle(UpdateMinhaClasseCommand request, 
         CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<Entities.v1.MinhaClasse>(request);
+        var entity = await _minhaclasseRepository.GetByIdAsync(request.Id, cancellationToken);
       
         if (entity == null)
         {
@@ -31,7 +31,7 @@ public class UpdateMinhaClasseCommandHandler : Handler<UpdateMinhaClasseCommand,
             return null;
         }
 
-        //entity.ChangeMinhaClasse(request.Name, request.Abbreviations, request.UserId, request.IsActive);
+        entity.ChangeMinhaClasse(request.Idade, request.Nome);
 
         await _minhaclasseRepository.UpdateAsync(entity, cancellationToken);
 

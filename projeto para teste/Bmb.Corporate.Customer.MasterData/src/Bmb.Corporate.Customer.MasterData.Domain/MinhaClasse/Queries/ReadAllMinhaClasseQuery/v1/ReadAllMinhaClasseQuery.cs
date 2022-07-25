@@ -7,7 +7,7 @@ public class ReadAllMinhaClasseQuery : Query<IList<ReadAllMinhaClasseQueryResult
     public bool OnlyActive {get; }
 
 
-    public ReadAllMinhaClasseQuery( bool onlyActive)
+    public ReadAllMinhaClasseQuery(bool onlyActive)
     {
         OnlyActive = onlyActive;
         

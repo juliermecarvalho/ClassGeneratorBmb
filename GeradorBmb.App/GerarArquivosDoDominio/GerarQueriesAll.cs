@@ -3,14 +3,16 @@
     public class GerarQueriesAll
     {
         private DirectoryInfo _directory;
+        private readonly IDictionary<string, string> _propertys;
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
 
-        public GerarQueriesAll(DirectoryInfo directoryInfo, string nameClass)
+        public GerarQueriesAll(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _propertys = propertys;
         }
 
 
@@ -46,7 +48,7 @@ public class ReadAll{_nameClass}Query : Query<IList<ReadAll{_nameClass}QueryResu
     public bool OnlyActive {abre}get; {fecha}
 
 
-    public ReadAll{_nameClass}Query( bool onlyActive)
+    public ReadAll{_nameClass}Query(bool onlyActive)
     {abre}
         OnlyActive = onlyActive;
         
@@ -123,6 +125,8 @@ public class ReadAll{_nameClass}CommandProfile : Profile
         private void ReadAllCommandResult(DirectoryInfo directoryReadAllCommand)
         {
             StreamWriter file = new(@$"{directoryReadAllCommand.FullName}\ReadAll{_nameClass}QueryResult.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
 namespace {gerarNamespace(directoryReadAllCommand)};
@@ -131,6 +135,7 @@ public class ReadAll{_nameClass}QueryResult
 {abre}
     public int Id {abre} get; set; {fecha}
     public bool IsActive {abre} get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

@@ -3,14 +3,16 @@
     public class GerarUpdate
     {
         private DirectoryInfo _directory;
+        private readonly IDictionary<string, string> _propertys;
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
 
-        public GerarUpdate(DirectoryInfo directoryInfo, string nameClass)
+        public GerarUpdate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _propertys = propertys;
         }
 
 
@@ -36,6 +38,8 @@
         private void UpdateCommand(DirectoryInfo directoryUpdateCommand)
         {
             StreamWriter file = new(@$"{directoryUpdateCommand.FullName}\Update{_nameClass}Command.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 using Bmb.Core.Domain.Models;
 
@@ -44,6 +48,8 @@ namespace {gerarNamespace(directoryUpdateCommand)};
 public class Update{_nameClass}Command : Command<Update{_nameClass}CommandResult>
 {abre}
     public int Id {abre}get; set; {fecha}
+    public bool IsActive {abre}get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());
@@ -55,7 +61,16 @@ public class Update{_nameClass}Command : Command<Update{_nameClass}CommandResult
         private void UpdateCommandHandler(DirectoryInfo directoryUpdateCommand)
         {
             StreamWriter file = new(@$"{directoryUpdateCommand.FullName}\Update{_nameClass}CommandHandler.cs");
+         
 
+            string param = "";
+            var virgula = "";
+
+            foreach (var property in _propertys)
+            {
+                param += $"{virgula}request.{property.Key}";
+                virgula = ", ";
+            }
 
             string linhas = @$"
 using AutoMapper;
@@ -81,7 +96,7 @@ public class Update{_nameClass}CommandHandler : Handler<Update{_nameClass}Comman
     public override async Task<Update{_nameClass}CommandResult?> Handle(Update{_nameClass}Command request, 
         CancellationToken cancellationToken)
     {abre}
-        var entity = _mapper.Map<Entities.v1.{_nameClass}>(request);
+        var entity = await _{_nameClass.ToLower()}Repository.GetByIdAsync(request.Id, cancellationToken);
       
         if (entity == null)
         {abre}
@@ -91,7 +106,7 @@ public class Update{_nameClass}CommandHandler : Handler<Update{_nameClass}Comman
             return null;
         {fecha}
 
-        //entity.Change{_nameClass}(request.Name, request.Abbreviations, request.UserId, request.IsActive);
+        entity.Change{_nameClass}({param});
 
         await _{_nameClass.ToLower()}Repository.UpdateAsync(entity, cancellationToken);
 
@@ -130,13 +145,17 @@ public class Update{_nameClass}CommandProfile : Profile
         private void UpdateCommandResult(DirectoryInfo directoryUpdateCommand)
         {
             StreamWriter file = new(@$"{directoryUpdateCommand.FullName}\Update{_nameClass}CommandResult.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
 namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
 
 public class Update{_nameClass}CommandResult
 {abre}
-
+    public string Id {abre}get; set; {fecha}
+    public bool IsActive {abre}get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

@@ -23,6 +23,6 @@ public class CreateMinhaClasseCommandHandler : Handler<CreateMinhaClasseCommand,
         var entity = _mapper.Map<Entities.v1.MinhaClasse>(request);
         var id = await _minhaclasseRepository.AddAsync(entity, cancellationToken);
     
-        return return _mapper.Map<CreateMinhaClasseCommandResult>(entity);
+        return _mapper.Map<CreateMinhaClasseCommandResult>(entity);
     }
 }

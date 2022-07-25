@@ -5,4 +5,8 @@ namespace Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Commands.UpdateMi
 public class UpdateMinhaClasseCommand : Command<UpdateMinhaClasseCommandResult>
 {
     public int Id {get; set; }
+    public bool IsActive {get; set; }
+    public int Idade { get; set; } 
+    public string Nome { get; set; } 
+
 }

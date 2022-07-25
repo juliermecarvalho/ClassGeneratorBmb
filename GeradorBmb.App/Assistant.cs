@@ -10,7 +10,7 @@
         const string abre = "{";
         const string fecha = "}";
 
-        public string GerarPropertys(IDictionary<string, string> propertys, bool setPrivate)
+        public string GerarPropertys(IDictionary<string, string> propertys, bool setPrivate = false)
         {
             string str = "";
             foreach (var property in propertys)

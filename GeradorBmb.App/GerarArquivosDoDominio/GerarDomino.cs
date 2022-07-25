@@ -21,13 +21,13 @@ namespace GeradorBmb.App.GerarArquivosDoDominio
 
         public void Gerar()
         {
-            new GerarCreate(_directory, _nameClass).Gerar();
+            new GerarCreate(_directory, _nameClass, _propertys).Gerar();
             new GerarDelete(_directory, _nameClass).Gerar();
-            new GerarUpdate(_directory, _nameClass).Gerar();
+            new GerarUpdate(_directory, _nameClass, _propertys).Gerar();
             new GerarContracts(_directory, _nameClass).Gerar();
             new GerarEntities(_directory, _nameClass, _propertys).Gerar();
-            new GerarQueriesAll(_directory, _nameClass).Gerar();
-            new GerarQueriesOne(_directory, _nameClass).Gerar();
+            new GerarQueriesAll(_directory, _nameClass, _propertys).Gerar();
+            new GerarQueriesOne(_directory, _nameClass, _propertys).Gerar();
 
             DirectoryInfo directoryUpdateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Update{_nameClass}Command\v1");
             if (!directoryUpdateCommand.Exists)

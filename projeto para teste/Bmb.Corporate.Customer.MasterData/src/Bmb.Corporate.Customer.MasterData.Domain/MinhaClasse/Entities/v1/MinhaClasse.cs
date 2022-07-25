@@ -12,6 +12,8 @@ public class MinhaClasse : Entity
 
     public MinhaClasse(int id, bool isActive, int idade, string nome) 
     {
+        Id = id;
+        IsActive = isActive;
         Idade = idade;
         Nome = nome;
 
@@ -30,6 +32,5 @@ public class MinhaClasse : Entity
         Nome = nome;
 
     }
-
 
 }

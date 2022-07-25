@@ -33,10 +33,10 @@
 
         private void Repository(DirectoryInfo directoryDeleteCommand)
         {
-            StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\I{_nameClass}Repository.cs");
+            StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}.cs");
 
             Assistant assistant = new();
-            var p =assistant.GerarPropertys(_propertys, true);
+            var p = assistant.GerarPropertys(_propertys, true);
             var c = assistant.GerarConstrutor(_nameClass, _propertys);
 
             string linhas = @$"
@@ -48,7 +48,6 @@ public class {_nameClass} : Entity
 {abre}
 {p}
 {c}
-
 {fecha}
 ";
              file.WriteLine(linhas.Trim());

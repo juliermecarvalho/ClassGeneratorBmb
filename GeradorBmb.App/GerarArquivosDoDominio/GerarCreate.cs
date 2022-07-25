@@ -3,14 +3,16 @@
     public class GerarCreate
     {
         private DirectoryInfo _directory;
+        private readonly IDictionary<string, string> _propertys;
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
 
-        public GerarCreate(DirectoryInfo directoryInfo, string nameClass)
+        public GerarCreate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _propertys = propertys;
         }
 
 
@@ -34,6 +36,9 @@
         private void CreateCommand(DirectoryInfo directoryCreateCommand)
         {
             StreamWriter file = new(@$"{directoryCreateCommand.FullName}\Create{_nameClass}Command.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
+
             string linhas = @$"
 using Bmb.Core.Domain.Models;
 
@@ -41,7 +46,9 @@ namespace {gerarNamespace(directoryCreateCommand)};
 
 public class Create{_nameClass}Command : Command<Create{_nameClass}CommandResult>
 {abre}
-
+    public string Name {abre}get; set; {fecha}
+    public bool IsActive {abre}get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());
@@ -81,7 +88,7 @@ public class Create{_nameClass}CommandHandler : Handler<Create{_nameClass}Comman
         var entity = _mapper.Map<Entities.v1.{_nameClass}>(request);
         var id = await _{_nameClass.ToLower()}Repository.AddAsync(entity, cancellationToken);
     
-        return return _mapper.Map<Create{_nameClass}CommandResult>(entity);
+        return _mapper.Map<Create{_nameClass}CommandResult>(entity);
     {fecha}
 {fecha}";
 
@@ -114,13 +121,17 @@ public class Create{_nameClass}CommandProfile : Profile
         private void CreateCommandResult(DirectoryInfo directoryCreateCommand)
         {
             StreamWriter file = new(@$"{directoryCreateCommand.FullName}\Create{_nameClass}CommandResult.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
 namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
 
 public class Create{_nameClass}CommandResult
 {abre}
-
+    public string Name {abre}get; set; {fecha}
+    public bool IsActive {abre}get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

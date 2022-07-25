@@ -3,14 +3,16 @@
     public class GerarQueriesOne
     {
         private DirectoryInfo _directory;
+        private readonly IDictionary<string, string> _propertys;
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
         const string notFound = "\"Not found\"";
-        public GerarQueriesOne(DirectoryInfo directoryInfo, string nameClass)
+        public GerarQueriesOne(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _propertys = propertys;
         }
 
 
@@ -132,6 +134,8 @@ public class ReadOne{_nameClass}QueryProfile : Profile
         private void ReadOneCommandResult(DirectoryInfo directoryReadOneCommand)
         {
             StreamWriter file = new(@$"{directoryReadOneCommand.FullName}\ReadOne{_nameClass}QueryResult.cs");
+            Assistant assistant = new();
+            var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
 namespace {gerarNamespace(directoryReadOneCommand)};
@@ -140,6 +144,7 @@ public class ReadOne{_nameClass}QueryResult
 {abre}
     public int Id {abre} get; set; {fecha}
     public bool IsActive {abre} get; set; {fecha}
+{p}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

@@ -2,6 +2,15 @@ using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
 using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
 using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
 using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
+using Bmb.Corporate.Customer.MasterData.Domain.MinhaClasse.Entities.v1;
 using Bmb.Corporate.Customer.MasterData.Domain.Segment.Entities.v1;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +22,15 @@ public class BmbContext : DbContext
 
     public DbSet<Segment> Segments => Set<Segment>();
 
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
+    public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
     public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
     public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
     public DbSet<MinhaClasse> MinhaClasses => Set<MinhaClasse>();
