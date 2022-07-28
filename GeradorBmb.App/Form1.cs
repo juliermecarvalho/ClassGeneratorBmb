@@ -1,4 +1,5 @@
 using GeradorBmb.App.GerarArquivosDoDominio;
+using GeradorBmb.App.GerarTestes;
 using System.Globalization;
 
 namespace GeradorBmb.App
@@ -24,8 +25,8 @@ namespace GeradorBmb.App
             nameClass = ConverterToTitleCase(nameClass);
             IDictionary<string, string> propertys = new Dictionary<string, string>();
 
-            propertys.Add("Idade", "int");
-            propertys.Add("Nome", "string");
+            //propertys.Add("Idade", "int");
+            //propertys.Add("Nome", "string");
 
 
             foreach (DataGridViewRow item in dgw.Rows)
@@ -60,24 +61,40 @@ namespace GeradorBmb.App
                 {
                     if (directoryInfo.Name.EndsWith("api", StringComparison.CurrentCultureIgnoreCase))
                     {
-  
-                        GerarController gerarController = new(directoryInfo, nameClass);
+                        var nameUsing = directoryInfo.Name.Replace(".api", string.Empty, StringComparison.CurrentCultureIgnoreCase).Trim();
+                        GerarController gerarController = new(directoryInfo, nameClass, nameUsing);
                         gerarController.Gerar();
 
                     }
 
                     if (directoryInfo.Name.EndsWith("domain", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        GerarDomino gerarDomino = new(directoryInfo, nameClass, propertys);
+                        var nameUsing = directoryInfo.Name.Replace(".domain", string.Empty, StringComparison.CurrentCultureIgnoreCase).Trim();
+
+                        GerarDomino gerarDomino = new(directoryInfo, nameClass, propertys, nameUsing);
                         gerarDomino.Gerar();
                     }
 
                     if (directoryInfo.Name.EndsWith("data", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        GerarRepository gerarDomino = new(directoryInfo, nameClass);
+                        var nameUsing = directoryInfo.Name.Replace(".data", string.Empty, StringComparison.CurrentCultureIgnoreCase).Trim();
+
+                        GerarRepository gerarDomino = new(directoryInfo, nameClass, nameUsing);
                         gerarDomino.Gerar();
                     }
                 }
+
+
+                DirectoryInfo diretorioTest = new($"{fileInfo.Directory.FullName}/test");
+
+                foreach (var directoryInfo in diretorioTest.EnumerateDirectories())
+                {
+                    var nameUsing = directoryInfo.Name.Replace(".data", string.Empty, StringComparison.CurrentCultureIgnoreCase).Trim();
+
+                    CreateExampleCommandHandlerTests gerarDomino = new(directoryInfo, nameClass, nameUsing);
+                    gerarDomino.Gerar();
+                }
+
 
                 MessageBox.Show("Fim");
             }
@@ -105,6 +122,11 @@ namespace GeradorBmb.App
         }
 
         private void dgw_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtNameClass_TextChanged(object sender, EventArgs e)
         {
 
         }

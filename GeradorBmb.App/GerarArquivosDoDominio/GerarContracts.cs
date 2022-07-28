@@ -6,11 +6,14 @@
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
+        private string _nameUsing;
 
-        public GerarContracts(DirectoryInfo directoryInfo, string nameClass)
+
+        public GerarContracts(DirectoryInfo directoryInfo, string nameClass, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _nameUsing = nameUsing;
         }
 
 
@@ -33,7 +36,7 @@
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\I{_nameClass}Repository.cs");
             string linhas = @$"
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
+using {_nameUsing}.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 

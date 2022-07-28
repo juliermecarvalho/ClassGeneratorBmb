@@ -14,8 +14,4 @@
       <PackageReference Include="BMB.Core.Domain" Version="2022.4.7.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MinhaClasse\Entities\v1\" />
-    </ItemGroup>
-
 </Project>

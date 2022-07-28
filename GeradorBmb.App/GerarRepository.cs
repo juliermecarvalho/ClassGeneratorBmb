@@ -7,15 +7,17 @@
     public class GerarRepository
     {
         private DirectoryInfo _directory;
+        private string _nameUsing;
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
         const string aspas = "\"";
         private Passos _passos = Passos.passo1;
-        public GerarRepository(DirectoryInfo directoryInfo, string nameClass)
+        public GerarRepository(DirectoryInfo directoryInfo, string nameClass, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _nameUsing = nameUsing;
         }
 
         public void Gerar()
@@ -59,11 +61,12 @@
 
                 StreamWriter file = new(fileInfo.FullName);
 
-                var strUsing = $"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;";
-                if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
-                {
-                    file.WriteLine(strUsing);
-                }
+                //tem que acertar esse using
+                //var strUsing = $"using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;";
+                //if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
+                //{
+                //    file.WriteLine(strUsing);
+                //}
 
                 var strAddScoped = $"        serviceCollection.AddScoped<I{_nameClass}Repository, {_nameClass}Repository>();";
                 if (linhas.Exists(x => x.Trim().Contains(strAddScoped.Trim())))
@@ -92,10 +95,10 @@
             {
                 StreamWriter file = new(fileInfo.FullName);
                 string linhas = @$"
-using Bmb.Corporate.Customer.MasterData.Infra.Data.Repositories.v1;
+using {_nameUsing}.Infra.Data.Repositories.v1;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bmb.Corporate.Customer.MasterData.Infra.Data;
+namespace {_nameUsing}.Infra.Data;
 
 public static class Bootstrapper
 {abre}
@@ -131,7 +134,7 @@ public static class Bootstrapper
                 rdr.Close();
 
                 StreamWriter file = new(fileInfo.FullName);
-                var strUsing = $"using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Entities.v1;";
+                var strUsing = $"using {_nameUsing}.Domain.{_nameClass}.Entities.v1;";
                 if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
                 {
                     file.WriteLine(strUsing);
@@ -178,7 +181,7 @@ public static class Bootstrapper
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Bmb.Corporate.Customer.MasterData.Infra.Data.Contexts;
+namespace {_nameUsing}.Infra.Data.Contexts;
 
 public class BmbContext : DbContext
 {abre}
@@ -203,10 +206,10 @@ public class BmbContext : DbContext
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}Repository.cs");
             string linhas = @$"
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Entities.v1;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
-using Bmb.Corporate.Customer.MasterData.Infra.Data.Contexts;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Entities.v1;
+using {_nameUsing}.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
+using {_nameUsing}.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
@@ -236,7 +239,7 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}Mappings.cs");
             string linhas = @$"
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Entities.v1;
+using {_nameUsing}.Domain.{_nameClass}.Entities.v1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

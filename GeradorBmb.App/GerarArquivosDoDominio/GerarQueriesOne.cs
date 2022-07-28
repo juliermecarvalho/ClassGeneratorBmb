@@ -8,11 +8,14 @@
         const string abre = "{";
         const string fecha = "}";
         const string notFound = "\"Not found\"";
-        public GerarQueriesOne(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
+        private string _nameUsing;
+
+        public GerarQueriesOne(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _propertys = propertys;
+            _nameUsing = nameUsing;
         }
 
 
@@ -73,7 +76,7 @@ using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Enums;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryReadOneCommand)};
 
@@ -115,7 +118,7 @@ public class ReadOne{_nameClass}QueryHandler : Handler<ReadOne{_nameClass}Query,
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryReadOneCommand)};
 
@@ -160,9 +163,9 @@ using FluentValidation;
 
 namespace {gerarNamespace(directoryCreateCommand)};
 
-public class ReadOne{_nameClass}ReadOneValidator : AbstractValidator<ReadOne{_nameClass}Query>
+public class ReadOne{_nameClass}QueryValidator : AbstractValidator<ReadOne{_nameClass}Query>
 {abre}
-    public ReadOne{_nameClass}ReadOneValidator()
+    public ReadOne{_nameClass}QueryValidator()
     {abre}
         RuleFor(x => x.Id).NotEmpty();
 

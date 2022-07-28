@@ -7,12 +7,15 @@
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
+        private string _nameUsing;
 
-        public GerarUpdate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
+
+        public GerarUpdate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _propertys = propertys;
+            _nameUsing = nameUsing;
         }
 
 
@@ -77,7 +80,7 @@ using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Enums;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryUpdateCommand)};
 
@@ -127,7 +130,7 @@ public class Update{_nameClass}CommandHandler : Handler<Update{_nameClass}Comman
             string linhas = @$"
 using AutoMapper;
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
 
 public class Update{_nameClass}CommandProfile : Profile
 {abre}
@@ -149,7 +152,7 @@ public class Update{_nameClass}CommandProfile : Profile
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
 
 public class Update{_nameClass}CommandResult
 {abre}
@@ -170,7 +173,7 @@ public class Update{_nameClass}CommandResult
 
 using FluentValidation;
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
 
 public class Update{_nameClass}CommandValidator : AbstractValidator<Update{_nameClass}Command>
 {abre}

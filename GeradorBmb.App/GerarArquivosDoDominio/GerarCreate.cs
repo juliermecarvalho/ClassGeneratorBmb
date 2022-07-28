@@ -7,12 +7,15 @@
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
+        private string _nameUsing;
 
-        public GerarCreate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
+
+        public GerarCreate(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _propertys = propertys;
+            _nameUsing = nameUsing;
         }
 
 
@@ -46,7 +49,6 @@ namespace {gerarNamespace(directoryCreateCommand)};
 
 public class Create{_nameClass}Command : Command<Create{_nameClass}CommandResult>
 {abre}
-    public string Name {abre}get; set; {fecha}
     public bool IsActive {abre}get; set; {fecha}
 {p}
 {fecha}
@@ -66,7 +68,7 @@ public class Create{_nameClass}Command : Command<Create{_nameClass}CommandResult
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryCreateCommand)};
 
@@ -103,7 +105,7 @@ public class Create{_nameClass}CommandHandler : Handler<Create{_nameClass}Comman
             string linhas = @$"
 using AutoMapper;
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
 
 public class Create{_nameClass}CommandProfile : Profile
 {abre}
@@ -125,11 +127,10 @@ public class Create{_nameClass}CommandProfile : Profile
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
 
 public class Create{_nameClass}CommandResult
 {abre}
-    public string Name {abre}get; set; {fecha}
     public bool IsActive {abre}get; set; {fecha}
 {p}
 {fecha}
@@ -146,7 +147,7 @@ public class Create{_nameClass}CommandResult
 
 using FluentValidation;
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
 
 public class Create{_nameClass}CommandValidator : AbstractValidator<Create{_nameClass}Command>
 {abre}

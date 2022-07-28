@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bmb.Core.Api" Version="2022.4.11.1" />
+      <PackageReference Include="Bmb.Core.Api.HealthCheck" Version="2022.4.8.1" />
+      <PackageReference Include="Bmb.Core.Api.HealthCheck.SqlServer" Version="2022.4.8.1" />
+      <PackageReference Include="Bmb.Core.Api.WarmUp" Version="2022.4.8.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Bmb.Teste.Operation.MasterData.Domain\Bmb.Teste.Operation.MasterData.Domain.csproj" />
+      <ProjectReference Include="..\Bmb.Teste.Operation.MasterData.Infra.Data\Bmb.Teste.Operation.MasterData.Infra.Data.csproj" />
+    </ItemGroup>
+
+</Project>

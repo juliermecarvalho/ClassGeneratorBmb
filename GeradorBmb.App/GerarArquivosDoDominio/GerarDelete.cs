@@ -7,12 +7,14 @@
         const string abre = "{";
         const string fecha = "}";
         const string notFound = "\"Not found\"";
+        private string _nameUsing;
 
 
-        public GerarDelete(DirectoryInfo directoryInfo, string nameClass)
+        public GerarDelete(DirectoryInfo directoryInfo, string nameClass, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _nameUsing = nameUsing;
         }
 
 
@@ -69,7 +71,7 @@ using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Enums;
 using Bmb.Core.Domain.Handlers;
 using Bmb.Core.Domain.Models;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
@@ -116,7 +118,7 @@ public class Delete{_nameClass}CommandHandler : Handler<Delete{_nameClass}Comman
 
 using FluentValidation;
 
-namespace Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Commands.Delete{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Delete{_nameClass}Command.v1;
 
 public class Delete{_nameClass}CommandValidator : AbstractValidator<Delete{_nameClass}Command>
 {abre}

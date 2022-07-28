@@ -7,12 +7,15 @@
         private readonly IDictionary<string, string> _propertys;
         const string abre = "{";
         const string fecha = "}";
+        private string _nameUsing;
 
-        public GerarEntities(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
+
+        public GerarEntities(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _propertys = propertys;
+            _nameUsing = nameUsing;
         }
 
 

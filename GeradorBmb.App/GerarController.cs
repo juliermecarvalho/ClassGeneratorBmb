@@ -10,11 +10,13 @@ namespace GeradorBmb.App
     {
         private DirectoryInfo _directory;
         private string _nameClass;
+        private string _nameUsing;
         const string tab = "    ";
-        public GerarController(DirectoryInfo directoryInfo, string nameClass)
+        public GerarController(DirectoryInfo directoryInfo, string nameClass, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
+            _nameUsing = nameUsing;
         }
 
         public void Gerar()
@@ -39,11 +41,11 @@ namespace GeradorBmb.App
             file.WriteLine($"using Bmb.Core.Api.Controllers;");
             file.WriteLine($"using Bmb.Core.Api.Responses;");
             file.WriteLine($"using Bmb.Core.Domain.Contracts;");
-            file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{nameClass}.Commands.Create{nameClass}Command.v1;");
-            file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{nameClass}.Commands.Delete{nameClass}Command.v1;");
-            file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{nameClass}.Commands.Update{nameClass}Command.v1;");
-            file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{nameClass}.Queries.ReadAll{nameClass}Query.v1;");
-            file.WriteLine($"using Bmb.Corporate.Customer.MasterData.Domain.{nameClass}.Queries.ReadOne{nameClass}Query.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Create{nameClass}Command.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Delete{nameClass}Command.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Update{nameClass}Command.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.ReadAll{nameClass}Query.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.ReadOne{nameClass}Query.v1;");
             file.WriteLine($"using MediatR;");
             file.WriteLine($"using Microsoft.AspNetCore.Mvc;");
             file.WriteLine($"using EmptyResult = Bmb.Core.Domain.Models.EmptyResult;");

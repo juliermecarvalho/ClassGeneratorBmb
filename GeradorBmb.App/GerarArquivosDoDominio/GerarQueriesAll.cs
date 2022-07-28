@@ -7,12 +7,14 @@
         private string _nameClass;
         const string abre = "{";
         const string fecha = "}";
+        private string _nameUsing;
 
-        public GerarQueriesAll(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys)
+        public GerarQueriesAll(DirectoryInfo directoryInfo, string nameClass, IDictionary<string, string> propertys, string nameUsing)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _propertys = propertys;
+            _nameUsing = nameUsing;
         }
 
 
@@ -70,7 +72,7 @@ public class ReadAll{_nameClass}Query : Query<IList<ReadAll{_nameClass}QueryResu
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryReadAllCommand)};
 
@@ -106,7 +108,7 @@ public class ReadAll{_nameClass}QueryHandler : Handler<ReadAll{_nameClass}Query,
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
-using Bmb.Corporate.Customer.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryReadAllCommand)};
 
