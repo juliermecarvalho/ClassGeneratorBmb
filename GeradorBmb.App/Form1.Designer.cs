@@ -77,7 +77,6 @@
             // 
             // dgw
             // 
-            this.dgw.AllowUserToOrderColumns = true;
             this.dgw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgw.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Property,
