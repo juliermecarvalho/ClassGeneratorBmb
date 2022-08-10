@@ -63,7 +63,6 @@
             this.txtNameClass.Name = "txtNameClass";
             this.txtNameClass.Size = new System.Drawing.Size(664, 23);
             this.txtNameClass.TabIndex = 1;
-            this.txtNameClass.Text = "Minha classe";
             this.txtNameClass.TextChanged += new System.EventHandler(this.txtNameClass_TextChanged);
             // 
             // label1
@@ -78,6 +77,7 @@
             // 
             // dgw
             // 
+            this.dgw.AllowUserToOrderColumns = true;
             this.dgw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgw.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Property,
@@ -103,6 +103,7 @@
             "int",
             "bool",
             "DateTime",
+            "DateTime?",
             "decimal",
             "float "});
             this.type.Name = "type";
