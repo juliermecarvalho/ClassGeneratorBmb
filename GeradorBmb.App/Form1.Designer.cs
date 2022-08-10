@@ -103,6 +103,7 @@
             "int",
             "bool",
             "DateTime",
+            "decimal",
             "float "});
             this.type.Name = "type";
             this.type.Width = 200;

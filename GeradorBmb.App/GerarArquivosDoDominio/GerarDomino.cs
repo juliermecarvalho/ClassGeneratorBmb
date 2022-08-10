@@ -32,7 +32,7 @@ namespace GeradorBmb.App.GerarArquivosDoDominio
             new GerarQueriesAll(_directory, _nameClass, _propertys, _nameUsing).Gerar();
             new GerarQueriesOne(_directory, _nameClass, _propertys, _nameUsing).Gerar();
 
-            DirectoryInfo directoryUpdateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Update{_nameClass}Command\v1");
+            DirectoryInfo directoryUpdateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Update\v1");
             if (!directoryUpdateCommand.Exists)
             {
                 directoryUpdateCommand.Create();

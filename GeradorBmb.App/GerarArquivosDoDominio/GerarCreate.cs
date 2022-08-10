@@ -21,7 +21,7 @@
 
         public void Gerar()
         {
-            DirectoryInfo directoryCreateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Create{_nameClass}Command\v1");
+            DirectoryInfo directoryCreateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Create\v1");
             if (!directoryCreateCommand.Exists)
             {
                 directoryCreateCommand.Create();
@@ -105,7 +105,7 @@ public class Create{_nameClass}CommandHandler : Handler<Create{_nameClass}Comman
             string linhas = @$"
 using AutoMapper;
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create.v1;
 
 public class Create{_nameClass}CommandProfile : Profile
 {abre}
@@ -127,7 +127,7 @@ public class Create{_nameClass}CommandProfile : Profile
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create.v1;
 
 public class Create{_nameClass}CommandResult
 {abre}
@@ -147,7 +147,7 @@ public class Create{_nameClass}CommandResult
 
 using FluentValidation;
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Create.v1;
 
 public class Create{_nameClass}CommandValidator : AbstractValidator<Create{_nameClass}Command>
 {abre}

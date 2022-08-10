@@ -36,14 +36,14 @@
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\I{_nameClass}Repository.cs");
             string linhas = @$"
-using {_nameUsing}.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
+using {_nameUsing}.Domain.{_nameClass}.Queries.GetAll.v1;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
 public interface I{_nameClass}Repository : Core.Domain.Contracts.IBaseRepository<Entities.v1.{_nameClass}>
 {abre}
     Task RemoveAsync(Entities.v1.{_nameClass} entity, CancellationToken cancellationToken = default);
-    Task<IList<Entities.v1.{_nameClass}>> ReadAll(ReadAll{_nameClass}Query query, CancellationToken cancellationToken = default);   
+    Task<IList<Entities.v1.{_nameClass}>> GetAll(GetAll{_nameClass}Query query, CancellationToken cancellationToken = default);   
 
 {fecha}
 ";

@@ -20,7 +20,7 @@
 
         public void Gerar()
         {
-            DirectoryInfo directoryDeleteCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Delete{_nameClass}Command\v1");
+            DirectoryInfo directoryDeleteCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Delete\v1");
             if (!directoryDeleteCommand.Exists)
             {
                 directoryDeleteCommand.Create();
@@ -118,7 +118,7 @@ public class Delete{_nameClass}CommandHandler : Handler<Delete{_nameClass}Comman
 
 using FluentValidation;
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Delete{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Delete.v1;
 
 public class Delete{_nameClass}CommandValidator : AbstractValidator<Delete{_nameClass}Command>
 {abre}

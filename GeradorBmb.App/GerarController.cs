@@ -41,11 +41,11 @@ namespace GeradorBmb.App
             file.WriteLine($"using Bmb.Core.Api.Controllers;");
             file.WriteLine($"using Bmb.Core.Api.Responses;");
             file.WriteLine($"using Bmb.Core.Domain.Contracts;");
-            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Create{nameClass}Command.v1;");
-            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Delete{nameClass}Command.v1;");
-            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Update{nameClass}Command.v1;");
-            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.ReadAll{nameClass}Query.v1;");
-            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.ReadOne{nameClass}Query.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Create.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Delete.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Update.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.GetAll.v1;");
+            file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Queries.GetOne.v1;");
             file.WriteLine($"using MediatR;");
             file.WriteLine($"using Microsoft.AspNetCore.Mvc;");
             file.WriteLine($"using EmptyResult = Bmb.Core.Domain.Models.EmptyResult;");
@@ -94,16 +94,16 @@ namespace GeradorBmb.App
             file.WriteLine("");
 
             file.WriteLine($"{tab}[HttpGet({parameter})]");
-            file.WriteLine($"{tab}public async Task<ActionResult<Response<ReadOne{nameClass}QueryResult?>>> GetOne([FromRoute] int id,");
+            file.WriteLine($"{tab}public async Task<ActionResult<Response<GetOne{nameClass}QueryResult?>>> GetOne([FromRoute] int id,");
             file.WriteLine($"{tab}{tab}CancellationToken cancellationToken) =>");
-            file.WriteLine($"{tab}{tab}await GetAsync<ReadOne{nameClass}Query, ReadOne{nameClass}QueryResult?>(new ReadOne{nameClass}Query(id), cancellationToken);");
+            file.WriteLine($"{tab}{tab}await GetAsync<GetOne{nameClass}Query, GetOne{nameClass}QueryResult?>(new GetOne{nameClass}Query(id), cancellationToken);");
             file.WriteLine("");
 
             file.WriteLine($"{tab}[HttpGet]");
-            file.WriteLine($"{tab}public async Task<ActionResult<Response<IList<ReadAll{nameClass}QueryResult>>>> GetAll(");
+            file.WriteLine($"{tab}public async Task<ActionResult<Response<IList<GetAll{nameClass}QueryResult>>>> GetAll(");
             file.WriteLine($"{tab}{tab}CancellationToken cancellationToken, [FromQuery] bool onlyActive = true) =>");
-            file.WriteLine($"{tab}{tab}await GetAsync<ReadAll{nameClass}Query, IList<ReadAll{nameClass}QueryResult>>(");
-            file.WriteLine($"{tab}{tab}{tab}new ReadAll{nameClass}Query(onlyActive), cancellationToken);");
+            file.WriteLine($"{tab}{tab}await GetAsync<GetAll{nameClass}Query, IList<GetAll{nameClass}QueryResult>>(");
+            file.WriteLine($"{tab}{tab}{tab}new GetAll{nameClass}Query(onlyActive), cancellationToken);");
             file.WriteLine("");
 
 

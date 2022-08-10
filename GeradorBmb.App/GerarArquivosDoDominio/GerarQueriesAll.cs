@@ -20,37 +20,37 @@
 
         public void Gerar()
         {
-            DirectoryInfo directoryReadAllCommand = new(@$"{_directory.FullName}\{_nameClass}\Queries\ReadAll{_nameClass}Query\v1");
-            if (!directoryReadAllCommand.Exists)
+            DirectoryInfo directoryGetAllCommand = new(@$"{_directory.FullName}\{_nameClass}\Queries\GetAll\v1");
+            if (!directoryGetAllCommand.Exists)
             {
-                directoryReadAllCommand.Create();
+                directoryGetAllCommand.Create();
             }
 
-            ReadAllCommandProfile(directoryReadAllCommand);
-            ReadAllQuery(directoryReadAllCommand);
+            GetAllCommandProfile(directoryGetAllCommand);
+            GetAllQuery(directoryGetAllCommand);
 
-            ReadAllCommandHandler(directoryReadAllCommand);
-            ReadAllCommandResult(directoryReadAllCommand);
+            GetAllCommandHandler(directoryGetAllCommand);
+            GetAllCommandResult(directoryGetAllCommand);
 
 
 
         }
 
 
-        private void ReadAllQuery(DirectoryInfo directoryReadAllCommand)
+        private void GetAllQuery(DirectoryInfo directoryGetAllCommand)
         {
-            StreamWriter file = new(@$"{directoryReadAllCommand.FullName}\ReadAll{_nameClass}Query.cs");
+            StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}Query.cs");
             string linhas = @$"
 using Bmb.Core.Domain.Models;
 
-namespace {gerarNamespace(directoryReadAllCommand)};
+namespace {gerarNamespace(directoryGetAllCommand)};
 
-public class ReadAll{_nameClass}Query : Query<IList<ReadAll{_nameClass}QueryResult>>
+public class GetAll{_nameClass}Query : Query<IList<GetAll{_nameClass}QueryResult>>
 {abre}
     public bool OnlyActive {abre}get; {fecha}
 
 
-    public ReadAll{_nameClass}Query(bool onlyActive)
+    public GetAll{_nameClass}Query(bool onlyActive)
     {abre}
         OnlyActive = onlyActive;
         
@@ -63,9 +63,9 @@ public class ReadAll{_nameClass}Query : Query<IList<ReadAll{_nameClass}QueryResu
 
         }
 
-        private void ReadAllCommandHandler(DirectoryInfo directoryReadAllCommand)
+        private void GetAllCommandHandler(DirectoryInfo directoryGetAllCommand)
         {
-            StreamWriter file = new(@$"{directoryReadAllCommand.FullName}\ReadAll{_nameClass}QueryHandler.cs");
+            StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}QueryHandler.cs");
 
 
             string linhas = @$"
@@ -74,24 +74,24 @@ using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
-namespace {gerarNamespace(directoryReadAllCommand)};
+namespace {gerarNamespace(directoryGetAllCommand)};
 
-public class ReadAll{_nameClass}QueryHandler : Handler<ReadAll{_nameClass}Query, IList<ReadAll{_nameClass}QueryResult>>
+public class GetAll{_nameClass}QueryHandler : Handler<GetAll{_nameClass}Query, IList<GetAll{_nameClass}QueryResult>>
 {abre}
     private readonly IMapper _mapper;
     private readonly I{_nameClass}Repository _{_nameClass.ToLower()}Repository;
     
-    public ReadAll{_nameClass}QueryHandler(INotificationContext notificationContext, IMapper mapper, 
+    public GetAll{_nameClass}QueryHandler(INotificationContext notificationContext, IMapper mapper, 
         I{_nameClass}Repository {_nameClass}Repository) : base(notificationContext)
     {abre}
             _mapper = mapper;
             _{_nameClass.ToLower()}Repository = {_nameClass}Repository;
     {fecha}
 
-    public override async Task<IList<ReadAll{_nameClass}QueryResult>> Handle(ReadAll{_nameClass}Query request, 
+    public override async Task<IList<GetAll{_nameClass}QueryResult>> Handle(GetAll{_nameClass}Query request, 
         CancellationToken cancellationToken)
     {abre}
-        return _mapper.Map<IList<ReadAll{_nameClass}QueryResult>>(await _{_nameClass.ToLower()}Repository.ReadAll(request, cancellationToken));        
+        return _mapper.Map<IList<GetAll{_nameClass}QueryResult>>(await _{_nameClass.ToLower()}Repository.GetAll(request, cancellationToken));        
 
     {fecha}
 {fecha}";
@@ -101,22 +101,22 @@ public class ReadAll{_nameClass}QueryHandler : Handler<ReadAll{_nameClass}Query,
         }
 
 
-        private void ReadAllCommandProfile(DirectoryInfo directoryReadAllCommand)
+        private void GetAllCommandProfile(DirectoryInfo directoryGetAllCommand)
         {
-            StreamWriter file = new(@$"{directoryReadAllCommand.FullName}\ReadAll{_nameClass}QueryProfile.cs");
+            StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}QueryProfile.cs");
             string linhas = @$"
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
-namespace {gerarNamespace(directoryReadAllCommand)};
+namespace {gerarNamespace(directoryGetAllCommand)};
 
-public class ReadAll{_nameClass}CommandProfile : Profile
+public class GetAll{_nameClass}CommandProfile : Profile
 {abre}
-    public ReadAll{_nameClass}CommandProfile()
+    public GetAll{_nameClass}CommandProfile()
     {abre}
-        CreateMap<Entities.v1.{_nameClass}, ReadAll{_nameClass}QueryResult>().ReverseMap();
+        CreateMap<Entities.v1.{_nameClass}, GetAll{_nameClass}QueryResult>().ReverseMap();
     {fecha}
 {fecha}
 ";
@@ -124,16 +124,16 @@ public class ReadAll{_nameClass}CommandProfile : Profile
             file.Close();
         }
 
-        private void ReadAllCommandResult(DirectoryInfo directoryReadAllCommand)
+        private void GetAllCommandResult(DirectoryInfo directoryGetAllCommand)
         {
-            StreamWriter file = new(@$"{directoryReadAllCommand.FullName}\ReadAll{_nameClass}QueryResult.cs");
+            StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}QueryResult.cs");
             Assistant assistant = new();
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace {gerarNamespace(directoryReadAllCommand)};
+namespace {gerarNamespace(directoryGetAllCommand)};
 
-public class ReadAll{_nameClass}QueryResult
+public class GetAll{_nameClass}QueryResult
 {abre}
     public int Id {abre} get; set; {fecha}
     public bool IsActive {abre} get; set; {fecha}
@@ -145,9 +145,9 @@ public class ReadAll{_nameClass}QueryResult
         }
 
 
-        private string gerarNamespace(DirectoryInfo directoryReadAllCommand)
+        private string gerarNamespace(DirectoryInfo directoryGetAllCommand)
         {
-            var split = directoryReadAllCommand.FullName.Split("src");
+            var split = directoryGetAllCommand.FullName.Split("src");
             string nameSpace = split[1].Replace('\\', '.').Remove(0, 1);
 
             return nameSpace;

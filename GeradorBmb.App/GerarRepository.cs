@@ -134,7 +134,7 @@ public static class Bootstrapper
                 rdr.Close();
 
                 StreamWriter file = new(fileInfo.FullName);
-                var strUsing = $"using {_nameUsing}.Domain.{_nameClass}.Entities.v1;";
+                var strUsing = $"using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Entities.v1;";
                 if (!linhas.Exists(x => x.Trim().Contains(strUsing.Trim())))
                 {
                     file.WriteLine(strUsing);
@@ -206,10 +206,10 @@ public class BmbContext : DbContext
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}Repository.cs");
             string linhas = @$"
-using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
-using {_nameUsing}.Domain.{_nameClass}.Entities.v1;
-using {_nameUsing}.Domain.{_nameClass}.Queries.ReadAll{_nameClass}Query.v1;
-using {_nameUsing}.Infra.Data.Contexts;
+using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Entities.v1;
+using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Queries.GetAll.v1;
+using {_nameUsing.Replace(".Infra", "")}.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
@@ -218,7 +218,7 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
 {abre}
      public {_nameClass}Repository(BmbContext context) : base(context) {abre} {fecha}
 
-     public async Task<IList<{_nameClass}>> ReadAll(ReadAll{_nameClass}Query query,
+     public async Task<IList<{_nameClass}>> GetAll(GetAll{_nameClass}Query query,
          CancellationToken cancellationToken = default)
      {abre}
          var queryable = DbSet.AsQueryable();
@@ -239,19 +239,20 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}Mappings.cs");
             string linhas = @$"
-using {_nameUsing}.Domain.{_nameClass}.Entities.v1;
+using Bmb.Corporate.MasterData.Infra.Data;
+using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Entities.v1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
-internal class {_nameClass}Mapping : IEntityTypeConfiguration<{_nameClass}>
+internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
 {abre}
 
 
-     public void Configure(EntityTypeBuilder<{_nameClass}> builder)
+     public override void Configure(EntityTypeBuilder<{_nameClass}> builder)
     {abre}
-        builder.ToTable({aspas}tbl_{_nameClass.ToLower()}{aspas});
+        builder.ToTable({aspas}{_nameClass.ToLower()}{aspas});
 
         builder.HasKey(pk => pk.Id);
 

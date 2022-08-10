@@ -21,7 +21,7 @@
 
         public void Gerar()
         {
-            DirectoryInfo directoryUpdateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Update{_nameClass}Command\v1");
+            DirectoryInfo directoryUpdateCommand = new(@$"{_directory.FullName}\{_nameClass}\Commands\Update\v1");
             if (!directoryUpdateCommand.Exists)
             {
                 directoryUpdateCommand.Create();
@@ -130,7 +130,7 @@ public class Update{_nameClass}CommandHandler : Handler<Update{_nameClass}Comman
             string linhas = @$"
 using AutoMapper;
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update.v1;
 
 public class Update{_nameClass}CommandProfile : Profile
 {abre}
@@ -152,7 +152,7 @@ public class Update{_nameClass}CommandProfile : Profile
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update.v1;
 
 public class Update{_nameClass}CommandResult
 {abre}
@@ -173,12 +173,14 @@ public class Update{_nameClass}CommandResult
 
 using FluentValidation;
 
-namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update{_nameClass}Command.v1;
+namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update.v1;
 
 public class Update{_nameClass}CommandValidator : AbstractValidator<Update{_nameClass}Command>
 {abre}
     public Update{_nameClass}CommandValidator()
     {abre}
+        RuleFor(x => x.Id).NotNull().NotEmpty();
+
         //RuleFor(seg => seg.Name)
         //.NotNull()
         //.NotEmpty().WithMessage(The name must be not empty)

@@ -21,18 +21,18 @@
 
         public void Gerar()
         {
-            DirectoryInfo directoryReadOneCommand = new(@$"{_directory.FullName}\{_nameClass}\Queries\ReadOne{_nameClass}Query\v1");
-            if (!directoryReadOneCommand.Exists)
+            DirectoryInfo directoryGetOneCommand = new(@$"{_directory.FullName}\{_nameClass}\Queries\GetOne\v1");
+            if (!directoryGetOneCommand.Exists)
             {
-                directoryReadOneCommand.Create();
+                directoryGetOneCommand.Create();
             }
 
-            ReadOneQuery(directoryReadOneCommand);
-            ReadOneCommandHandler(directoryReadOneCommand);
-            ReadOneCommandResult(directoryReadOneCommand);
+            GetOneQuery(directoryGetOneCommand);
+            GetOneCommandHandler(directoryGetOneCommand);
+            GetOneCommandResult(directoryGetOneCommand);
 
-            ReadOneCommandProfile(directoryReadOneCommand);
-            ReadOneCommandValidador(directoryReadOneCommand);
+            GetOneCommandProfile(directoryGetOneCommand);
+            GetOneCommandValidador(directoryGetOneCommand);
 
 
 
@@ -40,20 +40,20 @@
         }
 
 
-        private void ReadOneQuery(DirectoryInfo directoryReadOneCommand)
+        private void GetOneQuery(DirectoryInfo directoryGetOneCommand)
         {
-            StreamWriter file = new(@$"{directoryReadOneCommand.FullName}\ReadOne{_nameClass}Query.cs");
+            StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}Query.cs");
             string linhas = @$"
 using Bmb.Core.Domain.Models;
 
-namespace {gerarNamespace(directoryReadOneCommand)};
+namespace {gerarNamespace(directoryGetOneCommand)};
 
-public class ReadOne{_nameClass}Query : Query<ReadOne{_nameClass}QueryResult>
+public class GetOne{_nameClass}Query : Query<GetOne{_nameClass}QueryResult>
 {abre}
     public int Id {abre}get; {fecha}
 
 
-    public ReadOne{_nameClass}Query(int id)
+    public GetOne{_nameClass}Query(int id)
     {abre}
         Id = id;
         
@@ -66,9 +66,9 @@ public class ReadOne{_nameClass}Query : Query<ReadOne{_nameClass}QueryResult>
 
         }
 
-        private void ReadOneCommandHandler(DirectoryInfo directoryReadOneCommand)
+        private void GetOneCommandHandler(DirectoryInfo directoryGetOneCommand)
         {
-            StreamWriter file = new(@$"{directoryReadOneCommand.FullName}\ReadOne{_nameClass}QueryHandler.cs");
+            StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}QueryHandler.cs");
 
 
             string linhas = @$"
@@ -78,27 +78,27 @@ using Bmb.Core.Domain.Enums;
 using Bmb.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
-namespace {gerarNamespace(directoryReadOneCommand)};
+namespace {gerarNamespace(directoryGetOneCommand)};
 
-public class ReadOne{_nameClass}QueryHandler : Handler<ReadOne{_nameClass}Query, ReadOne{_nameClass}QueryResult?>
+public class GetOne{_nameClass}QueryHandler : Handler<GetOne{_nameClass}Query, GetOne{_nameClass}QueryResult?>
 {abre}
     private readonly IMapper _mapper;
     private readonly I{_nameClass}Repository _{_nameClass.ToLower()}Repository;
     
-    public ReadOne{_nameClass}QueryHandler(INotificationContext notificationContext, IMapper mapper, 
+    public GetOne{_nameClass}QueryHandler(INotificationContext notificationContext, IMapper mapper, 
         I{_nameClass}Repository {_nameClass}Repository) : base(notificationContext)
     {abre}
             _mapper = mapper;
             _{_nameClass.ToLower()}Repository = {_nameClass}Repository;
     {fecha}
 
-    public override async Task<ReadOne{_nameClass}QueryResult?> Handle(ReadOne{_nameClass}Query request, 
+    public override async Task<GetOne{_nameClass}QueryResult?> Handle(GetOne{_nameClass}Query request, 
         CancellationToken cancellationToken)
     {abre}
         var result = await _{_nameClass.ToLower()}Repository.GetByIdAsync(request.Id, cancellationToken);
 
         if (result is not null) 
-            return _mapper.Map<ReadOne{_nameClass}QueryResult>(result);
+            return _mapper.Map<GetOne{_nameClass}QueryResult>(result);
         
         NotificationContext.Push({notFound}, NotificationType.NotFound, request.GetCorrelation());
         return null;
@@ -111,22 +111,22 @@ public class ReadOne{_nameClass}QueryHandler : Handler<ReadOne{_nameClass}Query,
         }
 
 
-        private void ReadOneCommandProfile(DirectoryInfo directoryReadOneCommand)
+        private void GetOneCommandProfile(DirectoryInfo directoryGetOneCommand)
         {
-            StreamWriter file = new(@$"{directoryReadOneCommand.FullName}\ReadOne{_nameClass}QueryProfile.cs");
+            StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}QueryProfile.cs");
             string linhas = @$"
 using AutoMapper;
 using Bmb.Core.Domain.Contracts;
 using Bmb.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
-namespace {gerarNamespace(directoryReadOneCommand)};
+namespace {gerarNamespace(directoryGetOneCommand)};
 
-public class ReadOne{_nameClass}QueryProfile : Profile
+public class GetOne{_nameClass}QueryProfile : Profile
 {abre}
-    public ReadOne{_nameClass}QueryProfile()
+    public GetOne{_nameClass}QueryProfile()
     {abre}
-        CreateMap<Entities.v1.{_nameClass}, ReadOne{_nameClass}QueryResult>().ReverseMap();
+        CreateMap<Entities.v1.{_nameClass}, GetOne{_nameClass}QueryResult>().ReverseMap();
     {fecha}
 {fecha}
 ";
@@ -134,16 +134,16 @@ public class ReadOne{_nameClass}QueryProfile : Profile
             file.Close();
         }
 
-        private void ReadOneCommandResult(DirectoryInfo directoryReadOneCommand)
+        private void GetOneCommandResult(DirectoryInfo directoryGetOneCommand)
         {
-            StreamWriter file = new(@$"{directoryReadOneCommand.FullName}\ReadOne{_nameClass}QueryResult.cs");
+            StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}QueryResult.cs");
             Assistant assistant = new();
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
 
-namespace {gerarNamespace(directoryReadOneCommand)};
+namespace {gerarNamespace(directoryGetOneCommand)};
 
-public class ReadOne{_nameClass}QueryResult
+public class GetOne{_nameClass}QueryResult
 {abre}
     public int Id {abre} get; set; {fecha}
     public bool IsActive {abre} get; set; {fecha}
@@ -154,18 +154,18 @@ public class ReadOne{_nameClass}QueryResult
             file.Close();
         }
 
-        private void ReadOneCommandValidador(DirectoryInfo directoryCreateCommand)
+        private void GetOneCommandValidador(DirectoryInfo directoryCreateCommand)
         {
-            StreamWriter file = new(@$"{directoryCreateCommand.FullName}\ReadOne{_nameClass}QueryValidator.cs");
+            StreamWriter file = new(@$"{directoryCreateCommand.FullName}\GetOne{_nameClass}QueryValidator.cs");
             string linhas = @$"
 
 using FluentValidation;
 
 namespace {gerarNamespace(directoryCreateCommand)};
 
-public class ReadOne{_nameClass}QueryValidator : AbstractValidator<ReadOne{_nameClass}Query>
+public class GetOne{_nameClass}QueryValidator : AbstractValidator<GetOne{_nameClass}Query>
 {abre}
-    public ReadOne{_nameClass}QueryValidator()
+    public GetOne{_nameClass}QueryValidator()
     {abre}
         RuleFor(x => x.Id).NotEmpty();
 
@@ -177,9 +177,9 @@ public class ReadOne{_nameClass}QueryValidator : AbstractValidator<ReadOne{_name
         }
 
 
-        private string gerarNamespace(DirectoryInfo directoryReadOneCommand)
+        private string gerarNamespace(DirectoryInfo directoryGetOneCommand)
         {
-            var split = directoryReadOneCommand.FullName.Split("src");
+            var split = directoryGetOneCommand.FullName.Split("src");
             string nameSpace = split[1].Replace('\\', '.').Remove(0, 1);
 
             return nameSpace;
