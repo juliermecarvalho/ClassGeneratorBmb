@@ -88,7 +88,7 @@ public class Create{_nameClass}CommandHandler : Handler<Create{_nameClass}Comman
         CancellationToken cancellationToken)
     {abre}
         var entity = _mapper.Map<Entities.v1.{_nameClass}>(request);
-        var id = await _{_nameClass.ToLower()}Repository.AddAsync(entity, cancellationToken);
+        await _{_nameClass.ToLower()}Repository.AddAsync(entity, cancellationToken);
     
         return _mapper.Map<Create{_nameClass}CommandResult>(entity);
     {fecha}

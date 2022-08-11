@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeradorBmb.App
+﻿namespace GeradorBmb.App
 {
     public class GerarController
     {
@@ -36,8 +30,6 @@ namespace GeradorBmb.App
 
         private void gerarUsing(StreamWriter file, string nameClass)
         {
-
-
             file.WriteLine($"using Bmb.Core.Api.Controllers;");
             file.WriteLine($"using Bmb.Core.Api.Responses;");
             file.WriteLine($"using Bmb.Core.Domain.Contracts;");
@@ -60,7 +52,6 @@ namespace GeradorBmb.App
 
         private void gerarCorpo(StreamWriter file, string nameClass)
         {
-
             file.WriteLine("");
             file.WriteLine($"[Route(\"v1/{nameClass.ToLower()}\")]");
             file.WriteLine($"public class {nameClass}Controller : RestControllerBase<{nameClass}Controller>");
@@ -106,10 +97,7 @@ namespace GeradorBmb.App
             file.WriteLine($"{tab}{tab}{tab}new GetAll{nameClass}Query(onlyActive), cancellationToken);");
             file.WriteLine("");
 
-
             file.WriteLine("}");
-
-
         }
     }
 }

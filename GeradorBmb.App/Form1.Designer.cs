@@ -49,7 +49,8 @@
             // 
             // btnGerar
             // 
-            this.btnGerar.Location = new System.Drawing.Point(536, 374);
+            this.btnGerar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGerar.Location = new System.Drawing.Point(468, 473);
             this.btnGerar.Name = "btnGerar";
             this.btnGerar.Size = new System.Drawing.Size(140, 37);
             this.btnGerar.TabIndex = 0;
@@ -59,9 +60,11 @@
             // 
             // txtNameClass
             // 
+            this.txtNameClass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNameClass.Location = new System.Drawing.Point(12, 38);
             this.txtNameClass.Name = "txtNameClass";
-            this.txtNameClass.Size = new System.Drawing.Size(664, 23);
+            this.txtNameClass.Size = new System.Drawing.Size(596, 23);
             this.txtNameClass.TabIndex = 1;
             this.txtNameClass.TextChanged += new System.EventHandler(this.txtNameClass_TextChanged);
             // 
@@ -77,6 +80,9 @@
             // 
             // dgw
             // 
+            this.dgw.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgw.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Property,
@@ -84,7 +90,7 @@
             this.dgw.Location = new System.Drawing.Point(12, 67);
             this.dgw.Name = "dgw";
             this.dgw.RowTemplate.Height = 25;
-            this.dgw.Size = new System.Drawing.Size(664, 301);
+            this.dgw.Size = new System.Drawing.Size(596, 400);
             this.dgw.TabIndex = 3;
             this.dgw.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgw_CellContentClick);
             // 
@@ -100,6 +106,7 @@
             this.type.Items.AddRange(new object[] {
             "string ",
             "int",
+            "int?",
             "bool",
             "DateTime",
             "DateTime?",
@@ -110,7 +117,7 @@
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(688, 423);
+            this.ClientSize = new System.Drawing.Size(618, 522);
             this.Controls.Add(this.dgw);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtNameClass);

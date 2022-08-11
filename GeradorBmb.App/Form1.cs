@@ -105,7 +105,7 @@ namespace GeradorBmb.App
         {
             try
             {
-                str = str.ToLower();
+                str = str.Trim().ToLower();
                 TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
                 str = textInfo.ToTitleCase(str).Replace(" ", "");
                 return str;
