@@ -250,9 +250,10 @@ internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
 {abre}
 
 
-     public override void Configure(EntityTypeBuilder<{_nameClass}> builder)
+    public override void Configure(EntityTypeBuilder<{_nameClass}> builder)
     {abre}
-        builder.ToTable({aspas}{_nameClass.ToLower()}{aspas});
+
+        builder.ToTable(tbl{aspas}{_nameClass}{aspas}, {aspas}dbo{aspas});
 
         builder.HasKey(pk => pk.Id);
 
@@ -260,7 +261,6 @@ internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
 
         builder.Property(p => p.IsActive)
             .HasColumnType({aspas}char(1){aspas})
-            .HasColumnName({aspas}is_active{aspas})
             .IsRequired();
 
     {fecha}

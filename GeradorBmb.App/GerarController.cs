@@ -91,10 +91,9 @@
             file.WriteLine("");
 
             file.WriteLine($"{tab}[HttpGet]");
-            file.WriteLine($"{tab}public async Task<ActionResult<Response<IList<GetAll{nameClass}QueryResult>>>> GetAll(");
-            file.WriteLine($"{tab}{tab}CancellationToken cancellationToken, [FromQuery] bool onlyActive = true) =>");
-            file.WriteLine($"{tab}{tab}await GetAsync<GetAll{nameClass}Query, IList<GetAll{nameClass}QueryResult>>(");
-            file.WriteLine($"{tab}{tab}{tab}new GetAll{nameClass}Query(onlyActive), cancellationToken);");
+
+            file.WriteLine($"{tab}public async Task<ActionResult<Response<IList<GetAll{nameClass}QueryResult>>>> GetAll([FromQuery] GetAll{nameClass}Query request, CancellationToken cancellationToken) =>");
+            file.WriteLine($"{tab}{tab}await GetAsync<GetAll{nameClass}Query, IList<GetAll{nameClass}QueryResult>>(request, cancellationToken);");
             file.WriteLine("");
 
             file.WriteLine("}");
