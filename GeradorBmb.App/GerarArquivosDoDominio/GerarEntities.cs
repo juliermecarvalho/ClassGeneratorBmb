@@ -47,7 +47,7 @@ using Bmb.Core.Domain.Entities;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
-public class {_nameClass} : AuditableBaseEntity
+public class {_nameClass}Entity : AuditableBaseEntity
 {abre}
 {p}
 {c}

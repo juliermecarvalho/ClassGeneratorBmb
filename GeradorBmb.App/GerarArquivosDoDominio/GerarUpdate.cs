@@ -51,8 +51,8 @@ namespace {gerarNamespace(directoryUpdateCommand)};
 public class Update{_nameClass}Command : Command<Update{_nameClass}CommandResult>
 {abre}
     public int Id {abre}get; set; {fecha}
-    public bool IsActive {abre}get; set; {fecha}
 {p}
+    public bool IsActive {abre}get; set; {fecha}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());
@@ -157,8 +157,8 @@ namespace {_nameUsing}.Domain.{_nameClass}.Commands.Update.v1;
 public class Update{_nameClass}CommandResult
 {abre}
     public string Id {abre}get; set; {fecha}
-    public bool IsActive {abre}get; set; {fecha}
 {p}
+    public bool IsActive {abre}get; set; {fecha}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

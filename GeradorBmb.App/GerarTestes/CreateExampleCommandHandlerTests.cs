@@ -24,12 +24,12 @@ namespace GeradorBmb.App.GerarTestes
 
             _usingTestes = @$"
 
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Commands.Update.v1;
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Contracts.Repositories.v1;
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Commands.Create.v1;
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Commands.Delete.v1;
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Queries.GetAll.v1;
-using Bmb.Funding.Operation.MasterData.Domain.{_nameClass}.Queries.GetOne.v1;
+using {_nameUsing.Replace("Tests.Unit",string.Empty)}{_nameClass}.Commands.Update.v1;
+using {_nameUsing.Replace("Tests.Unit",string.Empty)}{_nameClass}.Contracts.Repositories.v1;
+using {_nameUsing.Replace("Tests.Unit",string.Empty)}{_nameClass}.Commands.Create.v1;
+using {_nameUsing.Replace("Tests.Unit",string.Empty)}{_nameClass}.Commands.Delete.v1;
+using {_nameUsing.Replace("Tests.Unit",string.Empty)}{_nameClass}.Queries.GetAll.v1;
+using {_nameUsing.Replace("Tests.Unit", string.Empty)}{_nameClass}.Queries.GetOne.v1;
 ".Trim();
         }
 

@@ -13,11 +13,14 @@
         const string fecha = "}";
         const string aspas = "\"";
         private Passos _passos = Passos.passo1;
-        public GerarRepository(DirectoryInfo directoryInfo, string nameClass, string nameUsing)
+        private readonly IDictionary<string, string> _propertys;
+
+        public GerarRepository(DirectoryInfo directoryInfo, string nameClass, string nameUsing, IDictionary<string, string> propertys)
         {
             _directory = directoryInfo;
             _nameClass = nameClass;
             _nameUsing = nameUsing;
+            _propertys = propertys;
         }
 
         public void Gerar()
@@ -37,7 +40,7 @@
             }
 
             Mappings(directoryDeleteMappings);
-            Contexts(_directory);
+            //Contexts(_directory);
             Bootstrapper(_directory);
 
 
@@ -223,7 +226,7 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
      {abre}
          var queryable = DbSet.AsQueryable();
 
-         if (query.OnlyActive)
+         if (query.IsActive)
              queryable = queryable.Where(x => x.IsActive);
 
          return await queryable.ToListAsync(cancellationToken);
@@ -237,9 +240,9 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
 
         private void Mappings(DirectoryInfo directoryDeleteCommand)
         {
+            var builder = getProperty();
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\{_nameClass}Mappings.cs");
             string linhas = @$"
-using Bmb.Corporate.MasterData.Infra.Data;
 using {_nameUsing.Replace(".Infra", "")}.Domain.{_nameClass}.Entities.v1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -253,11 +256,13 @@ internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
     public override void Configure(EntityTypeBuilder<{_nameClass}> builder)
     {abre}
 
-        builder.ToTable(tbl{aspas}{_nameClass}{aspas}, {aspas}dbo{aspas});
+        builder.ToTable({aspas}tbl{_nameClass}{aspas}, {aspas}dbo{aspas});
 
         builder.HasKey(pk => pk.Id);
 
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        
+{builder}
 
         builder.Property(p => p.IsActive)
             .HasColumnType({aspas}char(1){aspas})
@@ -269,6 +274,19 @@ internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
             file.Close();
 
         }
+
+        private object getProperty()
+        {
+            string str = "";
+            foreach (var property in _propertys)
+            {
+
+                str += $"       builder.Property(p => p.{property.Key}); {Environment.NewLine}";
+            }
+
+            return str;
+        }
+
         private string gerarNamespace(DirectoryInfo directoryDeleteCommand)
         {
             var split = directoryDeleteCommand.FullName.Split("src");

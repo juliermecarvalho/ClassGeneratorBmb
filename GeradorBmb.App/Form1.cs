@@ -79,7 +79,7 @@ namespace GeradorBmb.App
                     {
                         var nameUsing = directoryInfo.Name.Replace(".data", string.Empty, StringComparison.CurrentCultureIgnoreCase).Trim();
 
-                        GerarRepository gerarDomino = new(directoryInfo, nameClass, nameUsing);
+                        GerarRepository gerarDomino = new(directoryInfo, nameClass, nameUsing, propertys);
                         gerarDomino.Gerar();
                     }
                 }
