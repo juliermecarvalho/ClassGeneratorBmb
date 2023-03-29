@@ -41,7 +41,7 @@
         {
             StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}Query.cs");
             string linhas = @$"
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Models;
 
 namespace {gerarNamespace(directoryGetAllCommand)};
 
@@ -49,6 +49,7 @@ public class GetAll{_nameClass}Query : Query<IList<GetAll{_nameClass}QueryResult
 {abre}
     public bool IsActive {abre}get; {fecha}
 
+    public GetAll{_nameClass}Query() {{ IsActive = true; }}
 
     public GetAll{_nameClass}Query(bool isActive)
     {abre}
@@ -70,8 +71,8 @@ public class GetAll{_nameClass}Query : Query<IList<GetAll{_nameClass}QueryResult
 
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryGetAllCommand)};
@@ -106,8 +107,8 @@ public class GetAll{_nameClass}QueryHandler : Handler<GetAll{_nameClass}Query, I
             StreamWriter file = new(@$"{directoryGetAllCommand.FullName}\GetAll{_nameClass}QueryProfile.cs");
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryGetAllCommand)};

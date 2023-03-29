@@ -44,7 +44,7 @@
         {
             StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}Query.cs");
             string linhas = @$"
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Models;
 
 namespace {gerarNamespace(directoryGetOneCommand)};
 
@@ -73,9 +73,9 @@ public class GetOne{_nameClass}Query : Query<GetOne{_nameClass}QueryResult>
 
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryGetOneCommand)};
@@ -116,8 +116,8 @@ public class GetOne{_nameClass}QueryHandler : Handler<GetOne{_nameClass}Query, G
             StreamWriter file = new(@$"{directoryGetOneCommand.FullName}\GetOne{_nameClass}QueryProfile.cs");
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryGetOneCommand)};

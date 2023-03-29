@@ -55,7 +55,7 @@ namespace GeradorBmb.App
             {
 
                 FileInfo fileInfo = new(openFileDialog.FileName);
-                DirectoryInfo diretorio = new ($"{fileInfo.Directory.FullName}/src");
+                DirectoryInfo diretorio = new ($"{fileInfo.Directory.FullName}");
 
                 foreach (var directoryInfo in diretorio.EnumerateDirectories())
                 {

@@ -30,9 +30,9 @@
 
         private void gerarUsing(StreamWriter file, string nameClass)
         {
-            file.WriteLine($"using Bmb.Core.Api.Controllers;");
-            file.WriteLine($"using Bmb.Core.Api.Responses;");
-            file.WriteLine($"using Bmb.Core.Domain.Contracts;");
+            file.WriteLine($"using BMB.Core.Api.Controllers;");
+            file.WriteLine($"using BMB.Core.Api.Responses;");
+            file.WriteLine($"using BMB.Core.Domain.Contracts;");
             file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Create.v1;");
             file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Delete.v1;");
             file.WriteLine($"using {_nameUsing}.Domain.{nameClass}.Commands.Update.v1;");

@@ -27,7 +27,7 @@
         {
             string str = "";
 
-            str += $"   public {classeName}Entity() {abre}{fecha}{Environment.NewLine}{Environment.NewLine}";
+            str += $"   public {classeName}() {abre}{fecha}{Environment.NewLine}{Environment.NewLine}";
 
 
             string param = "";
@@ -48,19 +48,19 @@
             }
 
             str += $@"
-    public {classeName}Entity(int id, bool isActive, {param}) 
+    public {classeName}(int id, bool isActive, {param}) 
     {abre}
         Id = id;
         IsActive = isActive;
 {atribuicao}
     {fecha}
                 
-    public {classeName}Entity({param}) 
+    public {classeName}({param}) 
     {abre}
 {atribuicao}
     {fecha}
                 
-    public void Change{classeName}Entity({param}) 
+    public void Change{classeName}({param}) 
     {abre}
 {atribuicao}
     {fecha}{Environment.NewLine}";

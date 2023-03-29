@@ -43,11 +43,11 @@
             var c = assistant.GerarConstrutor(_nameClass, _propertys);
 
             string linhas = @$"
-using Bmb.Core.Domain.Entities;
+using BMB.Core.Domain.Entities;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
-public class {_nameClass}Entity : AuditableBaseEntity
+public class {_nameClass} : AuditableBaseEntity
 {abre}
 {p}
 {c}

@@ -44,7 +44,7 @@
             Assistant assistant = new();
             var p = assistant.GerarPropertys(_propertys);
             string linhas = @$"
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Models;
 
 namespace {gerarNamespace(directoryUpdateCommand)};
 
@@ -77,9 +77,9 @@ public class Update{_nameClass}Command : Command<Update{_nameClass}CommandResult
 
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryUpdateCommand)};

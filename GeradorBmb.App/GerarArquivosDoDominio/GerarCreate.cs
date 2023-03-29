@@ -43,7 +43,7 @@
             var p = assistant.GerarPropertys(_propertys);
 
             string linhas = @$"
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Models;
 
 namespace {gerarNamespace(directoryCreateCommand)};
 
@@ -66,8 +66,8 @@ public class Create{_nameClass}Command : Command<Create{_nameClass}CommandResult
 
             string linhas = @$"
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Handlers;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Handlers;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryCreateCommand)};

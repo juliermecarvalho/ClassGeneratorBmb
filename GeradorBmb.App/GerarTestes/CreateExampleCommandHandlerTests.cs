@@ -139,9 +139,9 @@ public class GetOne{_nameClass}QueryValidatorTests
             string linhas = @$"
 {_usingTestes}
 using AutoMapper;
-using Bmb.Core.Domain;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
+using BMB.Core.Domain;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
 using Moq;
 using Xunit;
 
@@ -221,7 +221,7 @@ public class GetOne{_nameClass}QueryHandlerTests
             string linhas = @$"
 {_usingTestes}
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
+using BMB.Core.Domain.Contracts;
 using Moq;
 using Xunit;
 
@@ -281,9 +281,9 @@ public class GetAll{_nameClass}QueryHandlerTests
             string linhas = @$"
 {_usingTestes}
 using AutoMapper;
-using Bmb.Core.Domain;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
+using BMB.Core.Domain;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
 using Moq;
 using Xunit;
 
@@ -427,9 +427,9 @@ public class Update{_nameClass}CommandValidatorTests
             StreamWriter file = new(@$"{directory.FullName}\Delete{_nameClass}CommandHandlerTests.cs");
             string linhas = @$"
 {_usingTestes}
-using Bmb.Core.Domain;
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
+using BMB.Core.Domain;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
 using Moq;
 using Xunit;
 
@@ -556,7 +556,7 @@ public class Delete{_nameClass}CommandValidatorTests
             string linhas = @$"
 {_usingTestes}
 using AutoMapper;
-using Bmb.Core.Domain.Contracts;
+using BMB.Core.Domain.Contracts;
 using Moq;
 using Xunit;
 

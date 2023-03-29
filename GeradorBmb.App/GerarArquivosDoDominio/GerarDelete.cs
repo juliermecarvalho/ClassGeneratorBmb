@@ -40,7 +40,7 @@
         {
             StreamWriter file = new(@$"{directoryDeleteCommand.FullName}\Delete{_nameClass}Command.cs");
             string linhas = @$"
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Models;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
 
@@ -67,10 +67,10 @@ public class Delete{_nameClass}Command :  Command<EmptyResult?>
 
 
             string linhas = @$"
-using Bmb.Core.Domain.Contracts;
-using Bmb.Core.Domain.Enums;
-using Bmb.Core.Domain.Handlers;
-using Bmb.Core.Domain.Models;
+using BMB.Core.Domain.Contracts;
+using BMB.Core.Domain.Enums;
+using BMB.Core.Domain.Handlers;
+using BMB.Core.Domain.Models;
 using {_nameUsing}.Domain.{_nameClass}.Contracts.Repositories.v1;
 
 namespace {gerarNamespace(directoryDeleteCommand)};
