@@ -21,32 +21,51 @@ namespace GeradorBmb.App
                 MessageBox.Show("Nome da classe não pode fazio");
                 return;                
             }
-
+            
             nameClass = ConverterToTitleCase(nameClass);
             IDictionary<string, string> propertys = new Dictionary<string, string>();
-
-            //propertys.Add("Idade", "int");
-            //propertys.Add("Nome", "string");
-
-
-            foreach (DataGridViewRow item in dgw.Rows)
+            IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-                if (item.Cells[0].Value != null)
-                {
-                    if (item.Cells[1].Value == null)
-                    {
-                        MessageBox.Show("Escolher o tipo da propriedade");
-                        return;
-                    }
-                    var property = ConverterToTitleCase(item.Cells[0].Value.ToString());
-                    var type = item.Cells[1].Value.ToString();
+{ "File", "IFormFile"}
 
-                    if (!string.IsNullOrWhiteSpace(property))
-                    {
-                        propertys.Add(property, type);
-                    }
+
+
+
+            };
+
+
+            foreach (var item in propertys2)
+            {
+
+                var property = ConverterToTitleCase(item.Key);
+                var type = item.Value;
+
+                if (!string.IsNullOrWhiteSpace(property))
+                {
+                    propertys.Add(property, type);
                 }
+
             }
+
+
+            //foreach (DataGridViewRow item in dgw.Rows)
+            //{
+            //    if (item.Cells[0].Value != null)
+            //    {
+            //        if (item.Cells[1].Value == null)
+            //        {
+            //            MessageBox.Show("Escolher o tipo da propriedade");
+            //            return;
+            //        }
+            //        var property = ConverterToTitleCase(item.Cells[0].Value.ToString());
+            //        var type = item.Cells[1].Value.ToString();
+
+            //        if (!string.IsNullOrWhiteSpace(property))
+            //        {
+            //            propertys.Add(property, type);
+            //        }
+            //    }
+            //}
 
 
 

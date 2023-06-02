@@ -47,15 +47,15 @@ namespace {gerarNamespace(directoryGetAllCommand)};
 
 public class GetAll{_nameClass}Query : Query<IList<GetAll{_nameClass}QueryResult>>
 {abre}
-    public bool IsActive {abre}get; {fecha}
+    //public bool IsActive {abre}get; {fecha}
 
-    public GetAll{_nameClass}Query() {{ IsActive = true; }}
+    //public GetAll{_nameClass}Query() {{ IsActive = true; }}
 
-    public GetAll{_nameClass}Query(bool isActive)
-    {abre}
-        IsActive = isActive;
+    //public GetAll{_nameClass}Query(bool isActive)
+    //{abre}
+    //    IsActive = isActive;
         
-    {fecha}
+    //{fecha}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());
@@ -138,11 +138,11 @@ public class GetAll{_nameClass}QueryResult
 {abre}
     public int Id {{ get; set; }}    
 {p}
-    public bool IsActive {{ get; set; }}
-    public string CreatedBy {{ get; set; }}
-    public DateTime CreatedOn {{ get; set; }}
-    public string? ModifiedBy {{ get; set; }}
-    public DateTime? ModifiedOn {{ get; set; }}
+    //public bool IsActive {{ get; set; }}
+    //public string CreatedBy {{ get; set; }}
+    //public DateTime CreatedOn {{ get; set; }}
+    //public string? ModifiedBy {{ get; set; }}
+    //public DateTime? ModifiedOn {{ get; set; }}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

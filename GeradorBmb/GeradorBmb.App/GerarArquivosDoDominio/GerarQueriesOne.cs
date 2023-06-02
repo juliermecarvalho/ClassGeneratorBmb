@@ -147,11 +147,11 @@ public class GetOne{_nameClass}QueryResult
 {abre}
     public int Id {{ get; set; }}    
 {p}
-    public bool IsActive {{ get; set; }}
-    public string CreatedBy {{ get; set; }}
-    public DateTime CreatedOn {{ get; set; }}
-    public string? ModifiedBy {{ get; set; }}
-    public DateTime? ModifiedOn {{ get; set; }}
+    //public bool IsActive {{ get; set; }}
+    //public string CreatedBy {{ get; set; }}
+    //public DateTime CreatedOn {{ get; set; }}
+    //public string? ModifiedBy {{ get; set; }}
+    //public DateTime? ModifiedOn {{ get; set; }}
 {fecha}
 ";
             file.WriteLine(linhas.Trim());

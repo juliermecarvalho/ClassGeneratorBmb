@@ -226,8 +226,8 @@ public class {_nameClass}Repository : BaseRepository<{_nameClass}>, I{_nameClass
      {abre}
          var queryable = DbSet.AsQueryable();
 
-         if (query.IsActive)
-             queryable = queryable.Where(x => x.IsActive);
+         //if (query.IsActive)
+         //    queryable = queryable.Where(x => x.IsActive);
 
          return await queryable.ToListAsync(cancellationToken);
      {fecha}
@@ -263,10 +263,10 @@ internal class {_nameClass}Mapping : BaseConfiguration<{_nameClass}>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         
 {builder}
-
-        builder.Property(p => p.IsActive)
-            .HasColumnType({aspas}char(1){aspas})
-            .IsRequired();
+        builder.Ignore(p => p.IsActive);
+        //builder.Property(p => p.IsActive)
+        //    .HasColumnType({aspas}char(1){aspas})
+        //    .IsRequired();
 
     {fecha}
 {fecha}";
