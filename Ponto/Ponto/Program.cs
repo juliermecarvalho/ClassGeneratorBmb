@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-
+using OpenQA.Selenium.Edge;
 
 IWebDriver Login()
 {
@@ -8,9 +7,9 @@ IWebDriver Login()
     const string url = "https://app2.pontomais.com.br/login";
 
     // Configurar o driver do Chrome
-    ChromeOptions options = new ChromeOptions();
-    options.AddArgument("--start-maximized");
-    IWebDriver driver = new ChromeDriver(options);
+    var options = new EdgeOptions();
+    options.AddArgument("--headless");
+    IWebDriver driver = new EdgeDriver(options);
 
     driver.Navigate().GoToUrl(url);
 
@@ -30,7 +29,7 @@ IWebDriver Login()
     {
         if (button.Text.Contains("Entrar"))
         {
-            button.Click();
+             button.Click();           
         }
 
     }
@@ -97,16 +96,18 @@ void BaterBonto(IWebDriver driver)
 
     if (button != null)
     {
-        button.Click();
+       button.Click();
     }
 }
 
-
+Random random = new Random();
+int numeroAleatorio = random.Next(20, 41);
 var driver = Login();
 
-while (!RegistarPonto(driver, 8, 35))
+while (!RegistarPonto(driver, 10, 23))
 {
     Thread.Sleep(60000);
+    
 }
 while (!RegistarPonto(driver, 12, 0))
 {
