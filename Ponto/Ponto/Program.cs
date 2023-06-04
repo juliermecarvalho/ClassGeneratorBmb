@@ -1,14 +1,15 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using System.Collections.Generic;
 
 IWebDriver Login()
 {
 
     const string url = "https://app2.pontomais.com.br/login";
 
-    // Configurar o driver do Chrome
     var options = new EdgeOptions();
-    options.AddArgument("--headless");
+    options.AddArgument("--headless");//--headless --start-maximized
     IWebDriver driver = new EdgeDriver(options);
 
     driver.Navigate().GoToUrl(url);
@@ -39,16 +40,8 @@ IWebDriver Login()
 }
 
 
-bool RegistarPonto(IWebDriver driver, int hours, int minutes)
+bool RegistarPonto(int hours, int minutes = 0)
 {
-
-    const string url = "https://app2.pontomais.com.br/registrar-ponto";
-
-
-    driver.Navigate().GoToUrl(url);
-
-    Thread.Sleep(10000);
-
     int hora = DateTime.Now.Hour;
     int minutos = DateTime.Now.Minute;
     int segundos = DateTime.Now.Second;
@@ -61,16 +54,34 @@ bool RegistarPonto(IWebDriver driver, int hours, int minutes)
         return true;
     }
 
+
     if (tempo > limiteInferior && tempo < limiteSuperior)
     {
+        var driver = Login();
+        const string url = "https://app2.pontomais.com.br/registrar-ponto";
+        driver.Navigate().GoToUrl(url);
+        Thread.Sleep(10000);
+
+        if (ObterHorasUltimoRegistro(driver, hours))
+        {
+            driver.Quit();
+            return true;
+        }
+
         BaterBonto(driver);
-        return true;
+
+        var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
+        Thread.Sleep(10000);
+        driver.Quit();
+
+        return ultimoRegistro;
     }
+
     return false;
 }
 
 
-bool ObterHorasUltimoRegistro(IWebDriver driver, string horas)
+bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
 {
     By horasPSelector = By.CssSelector("p.pm-text-dark-gray");
     var textoHoras = driver.FindElements(horasPSelector);
@@ -81,7 +92,7 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, string horas)
         if (text.Contains("às"))
         {
             var tempo = text.Split("às").LastOrDefault();
-            return tempo.Contains(horas);
+            return tempo.Contains(horas.ToString());
         }
     }
 
@@ -96,34 +107,45 @@ void BaterBonto(IWebDriver driver)
 
     if (button != null)
     {
-       button.Click();
+        button.Click();
+
+        var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
+        string[] linhasExistentes = File.ReadAllLines(caminho);
+        using (StreamWriter streamWriter = new StreamWriter(caminho))
+        {
+            foreach (string linhaExistente in linhasExistentes)
+            {
+                streamWriter.WriteLine(linhaExistente);
+            }
+
+            streamWriter.WriteLine(DateTime.Now.ToString("G"));
+            streamWriter.Flush();
+            streamWriter.Close();
+            Console.WriteLine("button.Click(): " + DateTime.Now.ToString("G"));
+
+        }
+        Thread.Sleep(60000);
     }
 }
 
-Random random = new Random();
-int numeroAleatorio = random.Next(20, 41);
-var driver = Login();
+Random random = new();
+int numeroAleatorio = random.Next(20, 35);
+Console.WriteLine("minutos escolhidos: " +  numeroAleatorio);
 
-while (!RegistarPonto(driver, 10, 23))
+List<int> horarios = new() { 8, 12, 13, 18 };
+
+foreach (var horario in horarios)
 {
-    Thread.Sleep(60000);
-    
-}
-while (!RegistarPonto(driver, 12, 0))
-{
-    Thread.Sleep(60000);
-}
-while (!RegistarPonto(driver, 13, 0))
-{
-    Thread.Sleep(60000);
-}
-while (!RegistarPonto(driver, 18, 0))
-{
-    Thread.Sleep(60000);
+    while (!RegistarPonto(horario, numeroAleatorio))
+    {
+        Thread.Sleep(60000);
+    }
+    numeroAleatorio = 0;
 }
 
+Console.WriteLine("FIM!!!");
+Console.ReadLine();
 
-Thread.Sleep(60000);
 
 
-driver.Quit();
+
