@@ -130,7 +130,7 @@ void BaterBonto(IWebDriver driver)
 
 Random random = new();
 int numeroAleatorio = random.Next(20, 35);
-Console.WriteLine("minutos escolhidos: " +  numeroAleatorio);
+Console.WriteLine("minuto escolhido: " +  numeroAleatorio);
 
 List<int> horarios = new() { 8, 12, 13, 18 };
 
