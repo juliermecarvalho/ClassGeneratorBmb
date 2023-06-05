@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
-using System.Collections.Generic;
 
 IWebDriver Login()
 {
@@ -9,7 +7,7 @@ IWebDriver Login()
     const string url = "https://app2.pontomais.com.br/login";
 
     var options = new EdgeOptions();
-    options.AddArgument("--headless");//--headless --start-maximized
+    options.AddArgument("--start-maximized");//--headless --start-maximized
     IWebDriver driver = new EdgeDriver(options);
 
     driver.Navigate().GoToUrl(url);
@@ -91,8 +89,13 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
         var text = txt.Text;
         if (text.Contains("às"))
         {
-            var tempo = text.Split("às").LastOrDefault();
-            return tempo.Contains(horas.ToString());
+            var dataHoje = DateTime.Now.ToString("dd/MM");
+            var dataUltimoRegistro = text.Split("às").FirstOrDefault();
+            if (dataHoje.Trim().Equals(dataUltimoRegistro.Trim()))
+            {
+                var tempo = text.Split("às").LastOrDefault();
+                return tempo.Contains(horas.ToString());
+            }
         }
     }
 
@@ -140,6 +143,8 @@ foreach (var horario in horarios)
     {
         Thread.Sleep(60000);
     }
+    Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
+
     numeroAleatorio = 0;
 }
 

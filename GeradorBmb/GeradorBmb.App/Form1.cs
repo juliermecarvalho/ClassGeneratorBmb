@@ -26,7 +26,7 @@ namespace GeradorBmb.App
             IDictionary<string, string> propertys = new Dictionary<string, string>();
             IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-{ "File", "IFormFile"}
+{ "chave", "string"}
 
 
 
