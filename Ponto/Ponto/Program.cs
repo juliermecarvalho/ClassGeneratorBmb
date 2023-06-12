@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
+using System;
+using System.Runtime.InteropServices;
 
 IWebDriver Login()
 {
@@ -40,42 +42,48 @@ IWebDriver Login()
 
 bool RegistarPonto(int hours, int minutes = 0)
 {
-    int hora = DateTime.Now.Hour;
-    int minutos = DateTime.Now.Minute;
-    int segundos = DateTime.Now.Second;
-    TimeSpan tempo = new TimeSpan(hora, minutos, segundos);
-    TimeSpan limiteInferior = new TimeSpan(hours, minutes, 0); 
-    TimeSpan limiteSuperior = new TimeSpan(hours, (minutes + 10), 0); 
-
-    if(tempo > limiteSuperior)
+    try
     {
-        return true;
-    }
+        int hora = DateTime.Now.Hour;
+        int minutos = DateTime.Now.Minute;
+        int segundos = DateTime.Now.Second;
+        TimeSpan tempo = new TimeSpan(hora, minutos, segundos);
+        TimeSpan limiteInferior = new TimeSpan(hours, minutes, 0);
+        TimeSpan limiteSuperior = new TimeSpan(hours, (minutes + 10), 0);
 
-
-    if (tempo > limiteInferior && tempo < limiteSuperior)
-    {
-        var driver = Login();
-        const string url = "https://app2.pontomais.com.br/registrar-ponto";
-        driver.Navigate().GoToUrl(url);
-        Thread.Sleep(10000);
-
-        if (ObterHorasUltimoRegistro(driver, hours))
+        if (tempo > limiteSuperior)
         {
-            driver.Quit();
             return true;
         }
 
-        BaterBonto(driver);
+        if (tempo > limiteInferior && tempo < limiteSuperior)
+        {
+            var driver = Login();
+            const string url = "https://app2.pontomais.com.br/registrar-ponto";
+            driver.Navigate().GoToUrl(url);
+            Thread.Sleep(10000);
 
-        var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
-        Thread.Sleep(10000);
-        driver.Quit();
+            if (ObterHorasUltimoRegistro(driver, hours))
+            {
+                driver.Quit();
+                return true;
+            }
 
-        return ultimoRegistro;
+            BaterBonto(driver);
+
+            var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
+            Thread.Sleep(10000);
+            driver.Quit();
+
+            return ultimoRegistro;
+        }
+
+        return false;
     }
-
-    return false;
+    catch (Exception e)
+    {
+        return false;
+    }
 }
 
 
@@ -110,8 +118,9 @@ void BaterBonto(IWebDriver driver)
 
     if (button != null)
     {
+#if !DEBUG
         button.Click();
-
+#endif
         var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
         string[] linhasExistentes = File.ReadAllLines(caminho);
         using (StreamWriter streamWriter = new StreamWriter(caminho))
@@ -133,9 +142,29 @@ void BaterBonto(IWebDriver driver)
 
 Random random = new();
 int numeroAleatorio = random.Next(20, 35);
+int horaInicial = 8;
 Console.WriteLine("minuto escolhido: " +  numeroAleatorio);
 
-List<int> horarios = new() { 8, 12, 13, 18 };
+#if DEBUG
+
+horaInicial = 8;
+numeroAleatorio = 20;
+
+#endif
+
+
+List<int> horarios = new() { horaInicial, 12, 13, 18 };
+
+[DllImport("kernel32.dll")]
+static extern IntPtr GetConsoleWindow();
+[DllImport("user32.dll")]
+static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+// Define the constant for minimizing the console window
+const int SW_MINIMIZE = 6;
+IntPtr hWnd = GetConsoleWindow();
+// Minimize the console window
+ShowWindow(hWnd, SW_MINIMIZE);
+
 
 foreach (var horario in horarios)
 {
