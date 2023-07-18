@@ -15,7 +15,7 @@ namespace GeradorBmb.App
         {
     
             string nameClass = txtNameClass.Text;
-
+            
             if (string.IsNullOrWhiteSpace(nameClass))
             {
                 MessageBox.Show("Nome da classe não pode fazio");
@@ -26,8 +26,16 @@ namespace GeradorBmb.App
             IDictionary<string, string> propertys = new Dictionary<string, string>();
             IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-{ "numero Placa", "string"},
-{ "numero Chassi", "string"}
+{ "AnoAcaoFiscal", "int"},
+{ "U F", "string"},
+{ "Empregador", "string"},
+{ "C N P J C P F", "string"},
+{ "Estabelecimento", "string"},
+{ "Trabalhadores Envolvidos", "int"},
+{ "CNAE", "string"},
+{ "DecisaoAdministrativaProcedencia", "DateTime"},
+{ "InclusaoCadastroEmpregadores", "DateTime"},
+
 
 
 

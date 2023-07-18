@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 IWebDriver Login(int contador)
@@ -219,9 +220,24 @@ foreach (var horario in horarios)
     }
     Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
 
-    contador = 1; 
+    contador = 1;
     numeroAleatorio = 0;
 }
+
+DateTime hoje = DateTime.Now;
+if (hoje.DayOfWeek == DayOfWeek.Friday)
+{
+    Process.Start("shutdown", "/s /t 0");
+}
+
+Thread.Sleep(900000);
+
+
+
+
+
+
+
 
 Console.WriteLine("FIM!!!");
 Console.ReadLine();
