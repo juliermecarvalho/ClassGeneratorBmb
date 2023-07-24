@@ -65,7 +65,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         int segundos = DateTime.Now.Second;
         TimeSpan tempo = new TimeSpan(hora, minutos, segundos);
         TimeSpan limiteInferior = new TimeSpan(hours, minutes, 0);
-        TimeSpan limiteSuperior = new TimeSpan(hours, (minutes + 15), 0);
+        TimeSpan limiteSuperior = new TimeSpan(hours, (minutes + 20), 0);
 
         if (tempo > limiteSuperior)
         {
@@ -168,73 +168,70 @@ void BaterPonto(IWebDriver driver)
 }
 
 
+//while (true)
+//{
 
 
+    [DllImport("kernel32.dll")]
+    static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll")]
+    static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    // Define the constant for minimizing the console window
+    const int SW_MINIMIZE = 6;
+    IntPtr hWnd = GetConsoleWindow();
+    // Minimize the console window
+    ShowWindow(hWnd, SW_MINIMIZE);
 
-[DllImport("kernel32.dll")]
-static extern IntPtr GetConsoleWindow();
-[DllImport("user32.dll")]
-static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-// Define the constant for minimizing the console window
-const int SW_MINIMIZE = 6;
-IntPtr hWnd = GetConsoleWindow();
-// Minimize the console window
-ShowWindow(hWnd, SW_MINIMIZE);
+    [DllImport("kernel32.dll")]
+    static extern uint SetThreadExecutionState(uint esFlags);
 
-[DllImport("kernel32.dll")]
-static extern uint SetThreadExecutionState(uint esFlags);
-
-// Define the constant for preventing sleep
-const uint ES_CONTINUOUS = 0x80000000;
-const uint ES_SYSTEM_REQUIRED = 0x00000001;
-const uint ES_DISPLAY_REQUIRED = 0x00000002;
-
+    // Define the constant for preventing sleep
+    const uint ES_CONTINUOUS = 0x80000000;
+    const uint ES_SYSTEM_REQUIRED = 0x00000001;
+    const uint ES_DISPLAY_REQUIRED = 0x00000002;
 
 
+    Random random = new();
+    int init = random.Next(20, 29);
+    int fim = random.Next(30, 35);
+    int numeroAleatorio = random.Next(init, fim);
+    int horaInicial = 8;
 
-Random random = new();
-int init = random.Next(20, 29);
-int fim = random.Next(30, 35);
-int numeroAleatorio = random.Next(init, fim);
-int horaInicial = 8;
-
-//horaInicial = 9;
-//numeroAleatorio = 57;
-Console.WriteLine("minuto escolhido: " + numeroAleatorio);
-List<int> horarios = new() { horaInicial, 12, 13, 18 };
+    Console.WriteLine("minuto escolhido: " + numeroAleatorio);
+    List<int> horarios = new() { horaInicial, 12, 13, 18 };
 
 
-foreach (var horario in horarios)
-{
-    if (horario == 18)
+    foreach (var horario in horarios)
     {
-        numeroAleatorio = random.Next(10, 15);
+        //if (horario == 18)
+        //{
+        //    numeroAleatorio = random.Next(10, 15);
+        //}
+
+        var contador = 1;
+        while (!RegistarPonto(horario, numeroAleatorio, contador))
+        {
+            Thread.Sleep(60000);
+            contador++;
+            SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+        }
+        Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
+
+        contador = 1;
+        numeroAleatorio = 0;
     }
 
-    var contador = 1;
-    while (!RegistarPonto(horario, numeroAleatorio, contador))
+    DateTime hoje = DateTime.Now;
+    if (hoje.DayOfWeek == DayOfWeek.Friday)
     {
-        Thread.Sleep(60000);
-        contador++;
-        SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+        Process.Start("shutdown", "/s /t 0");
     }
-    Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
 
-    contador = 1;
-    numeroAleatorio = 0;
-}
-
-DateTime hoje = DateTime.Now;
-if (hoje.DayOfWeek == DayOfWeek.Friday)
-{
-    Process.Start("shutdown", "/s /t 0");
-}
-
-Thread.Sleep(900000);
+    Thread.Sleep(900000);
 
 
 
-
+//}
 
 
 
