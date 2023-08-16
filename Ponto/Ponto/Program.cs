@@ -2,48 +2,72 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.InteropServices;
 
-IWebDriver Login(int contador)
+
+IWebDriver Login(int contador, IWebDriver? d = null)
 {
-    IWebDriver driver;
     const string url = "https://app2.pontomais.com.br/login";
 
-    if (contador % 2 == 0)
+    IWebDriver driver;
+
+    if (d != null)
     {
-        var options = new EdgeOptions();
-        options.AddArgument("--start-maximized");//--headless --start-maximized
-        driver = new EdgeDriver(options);
+        driver = d;
     }
     else
     {
-        var options = new ChromeOptions();
-        options.AddArgument("--start-maximized");//--headless --start-maximized
-        driver = new ChromeDriver(options);
-    }
-    driver.Navigate().GoToUrl(url);
 
-    // Preencher os campos de login e senha
-    IWebElement loginInput = driver.FindElement(By.CssSelector("input[placeholder='Nome de usuário / cpf / e-mail']"));
-    IWebElement passwordInput = driver.FindElement(By.CssSelector("input[type='password']"));
-
-    loginInput.SendKeys("03907601610");
-    passwordInput.SendKeys("dzuT25%!&oa%");
-
-    // Aguardar a visibilidade do botão de envio
-    By submitButtonSelector = By.CssSelector("button.pm-primary");
-
-    var submitButtons = driver.FindElements(submitButtonSelector);
-
-    foreach (var button in submitButtons)
-    {
-        if (button.Text.Contains("Entrar"))
+        if (contador % 2 == 0)
         {
-             button.Click();           
+            var options = new EdgeOptions();
+            options.AddArgument("--start-maximized");//--headless --start-maximized
+            driver = new EdgeDriver(options);
         }
-
+        else
+        {
+            var options = new ChromeOptions();
+            options.AddArgument("--start-maximized");//--headless --start-maximized
+            driver = new ChromeDriver(options);
+        }
+       
     }
-    Thread.Sleep(10000);
+    try
+    {
+        if (d == null)
+        {
+            driver.Navigate().GoToUrl(url);
+        }
+        // Preencher os campos de login e senha
+        IWebElement loginInput = driver.FindElement(By.CssSelector("input[placeholder='Nome de usuário / cpf / e-mail']"));
+        IWebElement passwordInput = driver.FindElement(By.CssSelector("input[type='password']"));
+
+        loginInput.SendKeys("03907601610");
+        passwordInput.SendKeys("dzuT25%!&oa%");
+
+        // Aguardar a visibilidade do botão de envio
+        By submitButtonSelector = By.CssSelector("button.pm-primary");
+
+        var submitButtons = driver.FindElements(submitButtonSelector);
+
+        foreach (var button in submitButtons)
+        {
+            if (button.Text.Contains("Entrar"))
+            {
+                button.Click();
+            }
+
+        }
+        Thread.Sleep(10000);
+    }
+    catch (Exception e)
+    {
+        if (e.Message.Contains("timed out after"))
+        {
+            Login(contador, driver);
+        }       
+    }
 
     return driver;
 }
@@ -54,6 +78,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
     IWebDriver? driver = null;
     try
     {
+
         DateTime hoje = DateTime.Now;
         if (hoje.DayOfWeek == DayOfWeek.Saturday || hoje.DayOfWeek == DayOfWeek.Sunday)
         {
@@ -71,6 +96,8 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         {
             return true;
         }
+
+      
 
         if (tempo > limiteInferior && tempo < limiteSuperior)
         {
@@ -112,7 +139,6 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         }
     }
 }
-
 
 bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
 {
@@ -161,15 +187,28 @@ void BaterPonto(IWebDriver driver)
             streamWriter.Flush();
             streamWriter.Close();
             Console.WriteLine("button.Click(): " + DateTime.Now.ToString("G"));
-
         }
         Thread.Sleep(60000);
     }
 }
 
 
-//while (true)
-//{
+static bool CheckInternetConnection()
+{
+    try
+    {
+        using var client = new WebClient();
+        using var stream = client.OpenRead("https://www.google.com");
+        return true;
+    }
+    catch
+    {
+        return false;
+    }
+}
+
+while (true)
+{
 
 
     [DllImport("kernel32.dll")]
@@ -192,8 +231,8 @@ void BaterPonto(IWebDriver driver)
 
 
     Random random = new();
-    int init = random.Next(20, 29);
-    int fim = random.Next(30, 35);
+    int init = random.Next(35, 40);
+    int fim = random.Next(40, 50);
     int numeroAleatorio = random.Next(init, fim);
     int horaInicial = 8;
 
@@ -211,9 +250,19 @@ void BaterPonto(IWebDriver driver)
         var contador = 1;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
         {
-            Thread.Sleep(60000);
             contador++;
             SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+            var hora = DateTime.Now.Hour;
+
+            if (horarios.Contains(hora))
+            {
+                Thread.Sleep(10000);//10segundos
+            }
+            else
+            {
+                Thread.Sleep(180000);//3min
+            }          
+           
         }
         Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
 
@@ -226,12 +275,12 @@ void BaterPonto(IWebDriver driver)
     {
         Process.Start("shutdown", "/s /t 0");
     }
+    SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+    Thread.Sleep(900000);//15mim
 
-    Thread.Sleep(900000);
 
 
-
-//}
+}
 
 
 
