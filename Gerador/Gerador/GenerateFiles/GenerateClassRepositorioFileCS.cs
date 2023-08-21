@@ -9,7 +9,7 @@ namespace Gerador.GenerateFiles
         {
         
 
-            var directory = directorys.GetValueOrDefault("WebGed.Persistencia");
+            var directory = directorys.GetValueOrDefault("WebGed.Core.Persistencia");
 
             GenerateClassMaps(table, directory);
             GenerateIRepositorios(table, directory);
@@ -21,8 +21,8 @@ namespace Gerador.GenerateFiles
             var toReturn = new StringBuilder();
             var filedes = table.Fildes.Where(f => !f.IsForenKey).ToList();
 
-            filedes.Add(new Filde { Collum = "DataHoraCriacao", TypeCshap = "DateTime" });
-            filedes.Add(new Filde { Collum = "DataHoraAlteracao", TypeCshap = "DateTime" });
+            //filedes.Add(new Filde { Collum = "DataHoraCriacao", TypeCshap = "DateTime" });
+            //filedes.Add(new Filde { Collum = "DataHoraAlteracao", TypeCshap = "DateTime" });
             
             var filedesForenkey = table.Fildes.Where(f => f.IsForenKey).ToList();
 
@@ -32,7 +32,7 @@ namespace Gerador.GenerateFiles
                 if (campo.Collum != "Id")
                 {
                     var stringBase =
-                        @$"            builder.Property(x => x.{campo.Collum}).HasColumnName(""{ConvertToSnakeCase(campo.Collum)}"")";
+                        @$"            builder.Property(x => x.{campo.Collum}).HasColumnName(""{(campo.Collum)}"")";
 
                     if (campo.MaximumCharacters != null && campo.MaximumCharacters > 0)
                     {
@@ -55,7 +55,7 @@ namespace Gerador.GenerateFiles
             foreach (var campo in filedesForenkey)
             {
                 
-                var stringBase = @$"            builder.Property(x => x.{campo.CollumForemKey}Id).HasColumnName(""{ConvertToSnakeCase(campo.Collum)}_id"").IsRequired();
+                var stringBase = @$"            builder.Property(x => x.{campo.CollumForemKey}Id).HasColumnName(""{(campo.Collum)}"").IsRequired();
             builder.HasOne(x => x.{campo.CollumForemKey}).WithMany(x => x.{table.Name}).HasForeignKey(x => x.{campo.CollumForemKey}Id);";
                 toReturn.Append(stringBase);
                 toReturn.Append(Environment.NewLine);
@@ -78,7 +78,7 @@ namespace WebGed.Persistencia.Maps
     {{
         public void Configure(EntityTypeBuilder<{table.NameClass}> builder)
         {{
-            builder.ToTable(""{ConvertToSnakeCase(table.Name)}"");
+            builder.ToTable(""{(table.Name)}"");
            
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName(""id"");

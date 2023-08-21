@@ -9,7 +9,7 @@ namespace Gerador.GenerateFiles
         {
         
 
-            var directory = directorys.GetValueOrDefault("WebGed.Persistencia");
+            var directory = directorys.GetValueOrDefault("WebGed.Core.Persistencia");
 
             GenerateClassMaps(table, directory);
             GenerateIRepositorios(table, directory);
@@ -21,8 +21,8 @@ namespace Gerador.GenerateFiles
             var toReturn = new StringBuilder();
             var filedes = table.Fildes.Where(f => !f.IsForenKey).ToList();
 
-            filedes.Add(new Filde { Collum = "DataHoraCriacao", TypeCshap = "DateTime" });
-            filedes.Add(new Filde { Collum = "DataHoraAlteracao", TypeCshap = "DateTime" });
+            //filedes.Add(new Filde { Collum = "DataHoraCriacao", TypeCshap = "DateTime" });
+            //filedes.Add(new Filde { Collum = "DataHoraAlteracao", TypeCshap = "DateTime" });
             
             var filedesForenkey = table.Fildes.Where(f => f.IsForenKey).ToList();
 

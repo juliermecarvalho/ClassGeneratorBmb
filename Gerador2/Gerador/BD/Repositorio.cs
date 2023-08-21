@@ -16,7 +16,7 @@ namespace Gerador.BD
             // .Build();
 
             // _connectionStrings = $"{configuration.GetValue<string>("ConnectionStrings:webged")}";
-            _connectionStrings = "Server=10.159.10.42;Database=WebGed_AWS;User id=webged_demo;Password=fXL03c@43v;TrustServerCertificate=yes";
+            _connectionStrings = "Data Source=D800BCORP;Initial Catalog=dtb_hub;Integrated Security=True;TrustServerCertificate=yes";
         }
 
         public IList<string> ListTable()

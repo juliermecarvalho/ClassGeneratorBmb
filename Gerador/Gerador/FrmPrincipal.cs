@@ -39,22 +39,21 @@ namespace Gerador
                     }
                 }
 
-                //var tabelas = _repositorio.ListTable();
+                var tabelas = _repositorio.ListTable();
 
-                //foreach (var tabela in tabelas)
-                //{
-                //    Table table = _repositorio.ListTableAndField(tabela);
-                //    var gerou =_generateClassFileCS.Generate(table, directorys);
-                //    if (gerou)
-                //    {
-                //        // _generateClassRepositorioFileCS.Generate(table, directorys);
-                //        //_generateClassApiFileCS.Generate(table, directorys);
-                //        _generateClassApiFileCS.Generate(table, directorys);
-                //       // _generateTestesFileCS.Generate(table, directorys);
+                foreach (var tabela in tabelas)
+                {
+                    Table table = _repositorio.ListTableAndField(tabela);
+                    var gerou = _generateClassFileCS.Generate(table, directorys);
+                    if (gerou)
+                    {
+                        _generateClassRepositorioFileCS.Generate(table, directorys);
+                        _generateClassApiFileCS.Generate(table, directorys);
+                        
 
-                //    }
+                    }
 
-                //}
+                }
 
                 //Table table = new Table
                 //{
@@ -247,24 +246,24 @@ namespace Gerador
                 //table.Collection.Add("Versao");
 
 
-                Table table = new Table
-                {
-                    Name = "Versao",
-                };
-                table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "long" });
-                table.Fildes.Add(new Filde { Collum = "NomeArquivoOriginal", TypeCshap = "string", IsNull = false, MaximumCharacters = 250 });
-                table.Fildes.Add(new Filde { Collum = "Extensao", TypeCshap = "string", IsNull = true, MaximumCharacters = 250 });
-                table.Fildes.Add(new Filde { Collum = "NumeroDePaginas", TypeCshap = "int", IsNull = true });
-                table.Fildes.Add(new Filde { Collum = "TamanhoEmBytes", TypeCshap = "float", IsNull = false });
-                table.Fildes.Add(new Filde { Collum = "ConteudoTexto", TypeCshap = "string?", IsNull = true });
-                table.Fildes.Add(new Filde { Collum = "ContentType", TypeCshap = "string", IsNull = false });
-                table.Fildes.Add(new Filde { Collum = "VersaoAtual", TypeCshap = "bool", IsNull = false });
-                table.Fildes.Add(new Filde { Collum = "HashArquivo", TypeCshap = "string", IsNull = false });
+                //Table table = new Table
+                //{
+                //    Name = "Versao",
+                //};
+                //table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "long" });
+                //table.Fildes.Add(new Filde { Collum = "NomeArquivoOriginal", TypeCshap = "string", IsNull = false, MaximumCharacters = 250 });
+                //table.Fildes.Add(new Filde { Collum = "Extensao", TypeCshap = "string", IsNull = true, MaximumCharacters = 250 });
+                //table.Fildes.Add(new Filde { Collum = "NumeroDePaginas", TypeCshap = "int", IsNull = true });
+                //table.Fildes.Add(new Filde { Collum = "TamanhoEmBytes", TypeCshap = "float", IsNull = false });
+                //table.Fildes.Add(new Filde { Collum = "ConteudoTexto", TypeCshap = "string?", IsNull = true });
+                //table.Fildes.Add(new Filde { Collum = "ContentType", TypeCshap = "string", IsNull = false });
+                //table.Fildes.Add(new Filde { Collum = "VersaoAtual", TypeCshap = "bool", IsNull = false });
+                //table.Fildes.Add(new Filde { Collum = "HashArquivo", TypeCshap = "string", IsNull = false });
 
 
-                table.Fildes.Add(new Filde { Collum = "Repositorio", TypeCshap = "long", IsForenKey = true, TableForemKey = "Repositorio" });
-                table.Fildes.Add(new Filde { Collum = "CriadoPor", TypeCshap = "long", IsForenKey = true, TableForemKey = "Usuario" });
-                table.Fildes.Add(new Filde { Collum = "Documento", TypeCshap = "long", IsForenKey = true, TableForemKey = "Documento" });
+                //table.Fildes.Add(new Filde { Collum = "Repositorio", TypeCshap = "long", IsForenKey = true, TableForemKey = "Repositorio" });
+                //table.Fildes.Add(new Filde { Collum = "CriadoPor", TypeCshap = "long", IsForenKey = true, TableForemKey = "Usuario" });
+                //table.Fildes.Add(new Filde { Collum = "Documento", TypeCshap = "long", IsForenKey = true, TableForemKey = "Documento" });
                 //table.Fildes.Add(new Filde { Collum = "CriadoPor", TypeCshap = "long", IsForenKey = true, TableForemKey = "Usuario" });
                 //table.Fildes.Add(new Filde { Collum = "UsuarioUltimaAlteracao", TypeCshap = "long", IsForenKey = true, TableForemKey = "Usuario" });
                 //table.Fildes.Add(new Filde { Collum = "UsuariosDocumento", TypeCshap = "long", IsForenKey = true, TableForemKey = "Usuario" });
@@ -299,10 +298,10 @@ namespace Gerador
 
 
 
-                _generateClassFileCS.Generate(table, directorys);
-                _generateClassRepositorioFileCS.Generate(table, directorys);
-                _generateClassApiFileCS.Generate(table, directorys);
-                _generateTestesFileCS.Generate(table, directorys);
+                //_generateClassFileCS.Generate(table, directorys);
+                //_generateClassRepositorioFileCS.Generate(table, directorys);
+                //_generateClassApiFileCS.Generate(table, directorys);
+                //_generateTestesFileCS.Generate(table, directorys);
 
                 MessageBox.Show("Fim!");
             }

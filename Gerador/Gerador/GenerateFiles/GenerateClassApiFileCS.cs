@@ -7,7 +7,7 @@ namespace Gerador.GenerateFiles
         public bool Generate(Table table, Dictionary<string, DirectoryInfo> directorys)
         {
 
-            var directory = directorys.GetValueOrDefault("WebGed.Api");
+            var directory = directorys.GetValueOrDefault("WebGed.Core.Api");
 
 
 

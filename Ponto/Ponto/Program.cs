@@ -19,13 +19,13 @@ IWebDriver Login(int contador, IWebDriver? d = null)
     else
     {
 
-        if (contador % 2 == 0)
-        {
-            var options = new EdgeOptions();
-            options.AddArgument("--start-maximized");//--headless --start-maximized
-            driver = new EdgeDriver(options);
-        }
-        else
+        //if (contador % 2 == 0)
+        //{
+        //    var options = new EdgeOptions();
+        //    options.AddArgument("--start-maximized");//--headless --start-maximized
+        //    driver = new EdgeDriver(options);
+        //}
+        //else
         {
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");//--headless --start-maximized

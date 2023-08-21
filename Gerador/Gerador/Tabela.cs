@@ -29,7 +29,7 @@ namespace Gerador
 
         public bool IsNull { get; set; }
         public string Type { get; set; }
-        public string TypeCshap { get; set; }
+        public string TypeCshap { get => GetCSharpType(this.Type); }
         public int? MaximumCharacters { get; set; }
         public bool IsForenKey { get; set; } = false;
         public string TableForemKey { get; set; }

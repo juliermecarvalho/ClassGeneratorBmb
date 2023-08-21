@@ -39,52 +39,52 @@ namespace Gerador
                     }
                 }
 
-                //var tabelas = _repositorio.ListTable();
+                var tabelas = _repositorio.ListTable();
 
-                //foreach (var tabela in tabelas)
-                //{
-                //    Table table = _repositorio.ListTableAndField(tabela);
-                //    var gerou =_generateClassFileCS.Generate(table, directorys);
-                //    if (gerou)
-                //    {
-                //        // _generateClassRepositorioFileCS.Generate(table, directorys);
-                //        //_generateClassApiFileCS.Generate(table, directorys);
-                //        _generateClassApiFileCS.Generate(table, directorys);
-                //       // _generateTestesFileCS.Generate(table, directorys);
-
-                //    }
-
-                //}
-
-                //Table table = new Table
-                //{
-                //    Name = "AlertaClientes",
-                //};
-                //table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "int" });
-                //table.Fildes.Add(new Filde { Collum = "DescricaoCliente", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
-                //table.Fildes.Add(new Filde { Collum = "Aplicativo", TypeCshap = "int", IsForenKey = true, TableForemKey = "Aplicativos" });
-
-
-
-                Table table = new Table
+                foreach (var tabela in tabelas)
                 {
-                    Name = "Usuario",
-                };
-                table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "int" });
-                table.Fildes.Add(new Filde { Collum = "CPF", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
-                table.Fildes.Add(new Filde { Collum = "Nome", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
-                table.Fildes.Add(new Filde { Collum = "Senha", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
-                table.Fildes.Add(new Filde { Collum = "Ativo", TypeCshap = "bool", IsNull = false});
-                table.Fildes.Add(new Filde { Collum = "Email", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
-                table.Fildes.Add(new Filde { Collum = "TipoUsuario", TypeCshap = "TipoUsuario", IsNull = false });
+                    Table table = _repositorio.ListTableAndField(tabela);
+                    var gerou = _generateClassFileCS.Generate(table, directorys);
+                    if (gerou)
+                    {
+                       // _generateClassRepositorioFileCS.Generate(table, directorys);
+                        //_generateClassFileCS.Generate(table, directorys);
+                        //_generateClassApiFileCS.Generate(table, directorys);
+                        //_generateTestesFileCS.Generate(table, directorys);
+
+                    }
+
+                }
+
+                    //Table table = new Table
+                    //{
+                    //    Name = "AlertaClientes",
+                    //};
+                    //table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "int" });
+                    //table.Fildes.Add(new Filde { Collum = "DescricaoCliente", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
+                    //table.Fildes.Add(new Filde { Collum = "Aplicativo", TypeCshap = "int", IsForenKey = true, TableForemKey = "Aplicativos" });
 
 
-                _generateClassFileCS.Generate(table, directorys);
-                _generateClassRepositorioFileCS.Generate(table, directorys);
-                _generateClassApiFileCS.Generate(table, directorys);
-                _generateTestesFileCS.Generate(table, directorys);
 
-                MessageBox.Show("Fim!");
+                    //Table table = new Table
+                    //{
+                    //    Name = "Usuario",
+                    //};
+                    //table.Fildes.Add(new Filde { Collum = "Id", TypeCshap = "int" });
+                    //table.Fildes.Add(new Filde { Collum = "CPF", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
+                    //table.Fildes.Add(new Filde { Collum = "Nome", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
+                    //table.Fildes.Add(new Filde { Collum = "Senha", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
+                    //table.Fildes.Add(new Filde { Collum = "Ativo", TypeCshap = "bool", IsNull = false});
+                    //table.Fildes.Add(new Filde { Collum = "Email", TypeCshap = "string", IsNull = false, MaximumCharacters = 150 });
+                    //table.Fildes.Add(new Filde { Collum = "TipoUsuario", TypeCshap = "TipoUsuario", IsNull = false });
+
+
+                    //_generateClassFileCS.Generate(table, directorys);
+                    //_generateClassRepositorioFileCS.Generate(table, directorys);
+                    //_generateClassApiFileCS.Generate(table, directorys);
+                    //_generateTestesFileCS.Generate(table, directorys);
+
+                    MessageBox.Show("Fim!");
             }
         }
     }
