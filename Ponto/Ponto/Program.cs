@@ -233,7 +233,7 @@ while (true)
     Random random = new();
     int init = random.Next(35, 40);
     int fim = random.Next(40, 50);
-    int numeroAleatorio = random.Next(init, fim);
+    int numeroAleatorio = random.Next(50, 59);
     int horaInicial = 8;
 
     Console.WriteLine("minuto escolhido: " + numeroAleatorio);
@@ -242,10 +242,10 @@ while (true)
 
     foreach (var horario in horarios)
     {
-        //if (horario == 18)
-        //{
-        //    numeroAleatorio = random.Next(10, 15);
-        //}
+        if (horario == 18)
+        {
+            numeroAleatorio = random.Next(5, 10);
+        }
 
         var contador = 1;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
