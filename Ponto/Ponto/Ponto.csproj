@@ -9,8 +9,10 @@
 
   <ItemGroup>
 
+    <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.0" />
+
     <PackageReference Include="Selenium.WebDriver" Version="4.11.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.1100-beta" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.2200-beta" />
   </ItemGroup>
 
 </Project>
