@@ -317,9 +317,9 @@ static void StartPulse()
 
     if (sc.Status == ServiceControllerStatus.Stopped)
     {
-        Console.WriteLine($"Parando o serviço {serviceName}...");
+        Console.WriteLine($"Iniciando o serviço {serviceName}...");
         sc.Start();
         sc.WaitForStatus(ServiceControllerStatus.Running);
-        Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+        Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
     }
 }
