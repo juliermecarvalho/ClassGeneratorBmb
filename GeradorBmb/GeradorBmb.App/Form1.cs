@@ -26,15 +26,9 @@ namespace GeradorBmb.App
             IDictionary<string, string> propertys = new Dictionary<string, string>();
             IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-{ "AnoAcaoFiscal", "int"},
-{ "U F", "string"},
-{ "Empregador", "string"},
-{ "C N P J C P F", "string"},
-{ "Estabelecimento", "string"},
-{ "Trabalhadores Envolvidos", "int"},
-{ "CNAE", "string"},
-{ "DecisaoAdministrativaProcedencia", "DateTime"},
-{ "InclusaoCadastroEmpregadores", "DateTime"},
+
+{ "Cadastro atualizado em ", "DateTime"},
+{ "data de upload do arquivo", "DateTime"},
 
 
 

@@ -11,8 +11,10 @@
 
     <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.0" />
 
-    <PackageReference Include="Selenium.WebDriver" Version="4.11.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.2200-beta" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.12.2" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.3500-beta" />
+    <PackageReference Include="System.Management" Version="8.0.0-preview.7.23375.6" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.0-preview.7.23375.6" />
   </ItemGroup>
 
 </Project>

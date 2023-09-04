@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
 
+using System.ServiceProcess;
 
 IWebDriver Login(int contador, IWebDriver? d = null)
 {
@@ -18,11 +19,14 @@ IWebDriver Login(int contador, IWebDriver? d = null)
     }
     else
     {
-
+        PararPulse();
         if (contador % 2 == 0)
         {
             var options = new FirefoxOptions();
             options.AddArgument("--start-maximized");//--headless --start-maximized
+            options.SetPreference("geo.enabled", true);
+            options.SetPreference("geo.prompt.testing", true);
+            options.SetPreference("geo.prompt.testing.allow", true);
             driver = new FirefoxDriver(options);
         }
         else
@@ -31,7 +35,7 @@ IWebDriver Login(int contador, IWebDriver? d = null)
             options.AddArgument("--start-maximized");//--headless --start-maximized
             driver = new ChromeDriver(options);
         }
-       
+
     }
     try
     {
@@ -49,16 +53,16 @@ IWebDriver Login(int contador, IWebDriver? d = null)
         // Aguardar a visibilidade do botão de envio
         By submitButtonSelector = By.CssSelector("button.pm-primary");
 
+        //  var button = buttons.LastOrDefault(b => b.Text.Contains("Bater ponto", StringComparison.CurrentCultureIgnoreCase));
         var submitButtons = driver.FindElements(submitButtonSelector);
+        var button = submitButtons.LastOrDefault(b => b.Text.Contains("Entrar", StringComparison.CurrentCultureIgnoreCase));
 
-        foreach (var button in submitButtons)
+        if (button != null)
         {
-            if (button.Text.Contains("Entrar"))
-            {
-                button.Click();
-            }
-
+            button.Click();
         }
+
+
         Thread.Sleep(10000);
     }
     catch (Exception e)
@@ -66,19 +70,19 @@ IWebDriver Login(int contador, IWebDriver? d = null)
         if (e.Message.Contains("timed out after"))
         {
             Login(contador, driver);
-        }       
+        }
+        PararPulse();
     }
 
     return driver;
 }
-
 
 bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
 {
     IWebDriver? driver = null;
     try
     {
-
+       // driver = Login(contador);
         DateTime hoje = DateTime.Now;
         if (hoje.DayOfWeek == DayOfWeek.Saturday || hoje.DayOfWeek == DayOfWeek.Sunday)
         {
@@ -97,10 +101,9 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
             return true;
         }
 
-      
-
         if (tempo > limiteInferior && tempo < limiteSuperior)
         {
+            
             driver = Login(contador);
             const string url = "https://app2.pontomais.com.br/registrar-ponto";
             driver.Navigate().GoToUrl(url);
@@ -117,7 +120,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
             var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
             Thread.Sleep(10000);
             driver.Quit();
-
+            StartPulse();
             return ultimoRegistro;
         }
 
@@ -129,6 +132,8 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         {
             driver.Quit();
         }
+        PararPulse();
+
         return false;
     }
     finally
@@ -139,7 +144,6 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         }
     }
 }
-
 bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
 {
     By horasPSelector = By.CssSelector("p.pm-text-dark-gray");
@@ -191,8 +195,6 @@ void BaterPonto(IWebDriver driver)
         Thread.Sleep(60000);
     }
 }
-
-
 static bool CheckInternetConnection()
 {
     try
@@ -207,9 +209,10 @@ static bool CheckInternetConnection()
     }
 }
 
+
+
 while (true)
 {
-
 
     [DllImport("kernel32.dll")]
     static extern IntPtr GetConsoleWindow();
@@ -233,7 +236,7 @@ while (true)
     Random random = new();
     int init = random.Next(35, 40);
     int fim = random.Next(40, 50);
-    int numeroAleatorio = random.Next(50, 59);
+    int numeroAleatorio = random.Next(45, 55);
     int horaInicial = 8;
 
     Console.WriteLine("minuto escolhido: " + numeroAleatorio);
@@ -244,16 +247,17 @@ while (true)
     {
         if (horario == 18)
         {
-            numeroAleatorio = random.Next(5, 10);
+            numeroAleatorio = random.Next(5, 15);
         }
-
+        Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
+        StartPulse();
         var contador = 1;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
         {
             contador++;
             SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
             var hora = DateTime.Now.Hour;
-
+#if !DEBUG
             if (horarios.Contains(hora))
             {
                 Thread.Sleep(10000);//10segundos
@@ -261,10 +265,9 @@ while (true)
             else
             {
                 Thread.Sleep(180000);//3min
-            }          
-           
+            }
+#endif
         }
-        Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
 
         contador = 1;
         numeroAleatorio = 0;
@@ -288,6 +291,35 @@ while (true)
 Console.WriteLine("FIM!!!");
 Console.ReadLine();
 
+static void PararPulse()
+{
+    string serviceName = "PulseSecureService"; // Nome do serviço
+
+    ServiceController sc = new ServiceController(serviceName);
 
 
+    if (sc.Status == ServiceControllerStatus.Running)
+    {
+        Console.WriteLine($"Parando o serviço {serviceName}...");
+        sc.Stop();
+        sc.WaitForStatus(ServiceControllerStatus.Stopped);
+        Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+    }
+}
 
+
+static void StartPulse()
+{
+    string serviceName = "PulseSecureService"; // Nome do serviço
+
+    ServiceController sc = new ServiceController(serviceName);
+
+
+    if (sc.Status == ServiceControllerStatus.Stopped)
+    {
+        Console.WriteLine($"Parando o serviço {serviceName}...");
+        sc.Start();
+        sc.WaitForStatus(ServiceControllerStatus.Running);
+        Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+    }
+}
