@@ -82,7 +82,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
     IWebDriver? driver = null;
     try
     {
-       // driver = Login(contador);
+        //driver = Login(contador);
         DateTime hoje = DateTime.Now;
         if (hoje.DayOfWeek == DayOfWeek.Saturday || hoje.DayOfWeek == DayOfWeek.Sunday)
         {
@@ -118,14 +118,20 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
             BaterPonto(driver);
 
             var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
-            Thread.Sleep(10000);
+            if (ultimoRegistro)
+            {
+                Console.WriteLine("ponto batido vai aguardar 5 mim");
+                StartPulse();
+                Thread.Sleep(300000); //5mim
+            }
+            
             driver.Quit();
-            StartPulse();
             return ultimoRegistro;
         }
 
         return false;
     }
+
     catch (Exception e)
     {
         if (driver != null)
@@ -152,6 +158,7 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
     if (txt != null)
     {
         var text = txt.Text;
+
         if (text.Contains("às"))
         {
             var dataHoje = DateTime.Now.ToString("dd/MM");
@@ -159,6 +166,8 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
             if (dataHoje.Trim().Equals(dataUltimoRegistro.Trim()))
             {
                 var tempo = text.Split("às").LastOrDefault();
+                Console.WriteLine($"horas ultimo registro: {text}");
+
                 return tempo.Contains(horas.ToString());
             }
         }
@@ -190,7 +199,7 @@ void BaterPonto(IWebDriver driver)
             streamWriter.WriteLine(DateTime.Now.ToString("G"));
             streamWriter.Flush();
             streamWriter.Close();
-            Console.WriteLine("button.Click(): " + DateTime.Now.ToString("G"));
+
         }
         Thread.Sleep(60000);
     }
@@ -236,7 +245,7 @@ while (true)
     Random random = new();
     int init = random.Next(35, 40);
     int fim = random.Next(40, 50);
-    int numeroAleatorio = random.Next(45, 55);
+    int numeroAleatorio =  random.Next(45, 55);
     int horaInicial = 8;
 
     Console.WriteLine("minuto escolhido: " + numeroAleatorio);
@@ -247,11 +256,11 @@ while (true)
     {
         if (horario == 18)
         {
-            numeroAleatorio = random.Next(5, 15);
+            numeroAleatorio = 40;// random.Next(5, 15);
         }
         Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
         StartPulse();
-        var contador = 1;
+        var contador = 2;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
         {
             contador++;
@@ -260,7 +269,7 @@ while (true)
 #if !DEBUG
             if (horarios.Contains(hora))
             {
-                Thread.Sleep(10000);//10segundos
+                Thread.Sleep(1000);//1segundos
             }
             else
             {
@@ -269,7 +278,7 @@ while (true)
 #endif
         }
 
-        contador = 1;
+        contador = 2;
         numeroAleatorio = 0;
     }
 
