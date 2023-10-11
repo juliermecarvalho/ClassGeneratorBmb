@@ -19,7 +19,6 @@ IWebDriver Login(int contador, IWebDriver? d = null)
     }
     else
     {
-        PararPulse();
         if (contador % 2 == 0)
         {
             var options = new FirefoxOptions();
@@ -33,7 +32,7 @@ IWebDriver Login(int contador, IWebDriver? d = null)
         {
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");//--headless --start-maximized
-            driver = new ChromeDriver(options);
+            driver = new ChromeDriver();
         }
 
     }
@@ -231,7 +230,7 @@ while (true)
     const int SW_MINIMIZE = 6;
     IntPtr hWnd = GetConsoleWindow();
     // Minimize the console window
-    ShowWindow(hWnd, SW_MINIMIZE);
+   // ShowWindow(hWnd, SW_MINIMIZE);
 
     [DllImport("kernel32.dll")]
     static extern uint SetThreadExecutionState(uint esFlags);
@@ -256,14 +255,14 @@ while (true)
     {
         if (horario == 18)
         {
-            numeroAleatorio = 40;// random.Next(5, 15);
+            numeroAleatorio = random.Next(5, 15);
         }
         Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
         StartPulse();
         var contador = 2;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
         {
-            contador++;
+            //contador++;
             SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
             var hora = DateTime.Now.Hour;
 #if !DEBUG
@@ -302,33 +301,47 @@ Console.ReadLine();
 
 static void PararPulse()
 {
-    string serviceName = "PulseSecureService"; // Nome do serviço
-
-    ServiceController sc = new ServiceController(serviceName);
-
-
-    if (sc.Status == ServiceControllerStatus.Running)
+    try
     {
-        Console.WriteLine($"Parando o serviço {serviceName}...");
-        sc.Stop();
-        sc.WaitForStatus(ServiceControllerStatus.Stopped);
-        Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+        string serviceName = "PulseSecureService"; // Nome do serviço
+
+        ServiceController sc = new ServiceController(serviceName);
+
+
+        if (sc.Status == ServiceControllerStatus.Running)
+        {
+            Console.WriteLine($"Parando o serviço {serviceName}...");
+            sc.Stop();
+            sc.WaitForStatus(ServiceControllerStatus.Stopped);
+            Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+        }
+    }
+    catch (Exception)
+    {
+
     }
 }
 
 
 static void StartPulse()
 {
-    string serviceName = "PulseSecureService"; // Nome do serviço
-
-    ServiceController sc = new ServiceController(serviceName);
-
-
-    if (sc.Status == ServiceControllerStatus.Stopped)
+    try
     {
-        Console.WriteLine($"Iniciando o serviço {serviceName}...");
-        sc.Start();
-        sc.WaitForStatus(ServiceControllerStatus.Running);
-        Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
+        string serviceName = "PulseSecureService"; // Nome do serviço
+
+        ServiceController sc = new ServiceController(serviceName);
+
+
+        if (sc.Status == ServiceControllerStatus.Stopped)
+        {
+            Console.WriteLine($"Iniciando o serviço {serviceName}...");
+            sc.Start();
+            sc.WaitForStatus(ServiceControllerStatus.Running);
+            Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
+        }
+    }
+    catch (Exception)
+    {
+
     }
 }

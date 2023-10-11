@@ -26,13 +26,22 @@ namespace GeradorBmb.App
             IDictionary<string, string> propertys = new Dictionary<string, string>();
             IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-
-{ "Cadastro atualizado em ", "DateTime"},
-{ "data de upload do arquivo", "DateTime"},
-
-
-
-
+                {"NM CGCXCPF", "string"},
+                {"TP TPESSOA", "string"},
+                {"NM CGCXUNV", "string"},
+                {"NM PROPCRE", "string"},
+                {"DT SOLCRED", "DateTime"},
+                {"CD FILIALB", "int"},
+                {"CD PRODUTO", "int"},
+                {"CD OPERADR", "string"},
+                {"PZ SOLCRED", "int"},
+                {"PZ CARCRED", "int"},
+                {"VL TOTALSO", "int"},
+                {"VL TOTALGE", "int"},
+                {"DT DESPACO", "DateTime"},
+                {"NM ENTIDAD", "string"},
+                {"NM ENTIDRA", "string"},
+                {"DT FIMCADA", "DateTime" }
 
             };
 
