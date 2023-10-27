@@ -4,7 +4,6 @@ using OpenQA.Selenium.Firefox;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
-
 using System.ServiceProcess;
 
 IWebDriver Login(int contador, IWebDriver? d = null)
@@ -61,7 +60,6 @@ IWebDriver Login(int contador, IWebDriver? d = null)
             button.Click();
         }
 
-
         Thread.Sleep(10000);
     }
     catch (Exception e)
@@ -70,6 +68,8 @@ IWebDriver Login(int contador, IWebDriver? d = null)
         {
             Login(contador, driver);
         }
+        Sair(driver);
+
         PararPulse();
     }
 
@@ -81,7 +81,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
     IWebDriver? driver = null;
     try
     {
-        //driver = Login(contador);
+      //  driver = Login(contador);
         DateTime hoje = DateTime.Now;
         if (hoje.DayOfWeek == DayOfWeek.Saturday || hoje.DayOfWeek == DayOfWeek.Sunday)
         {
@@ -117,13 +117,12 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
             BaterPonto(driver);
 
             var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
-            if (ultimoRegistro)
-            {
-                Console.WriteLine("ponto batido vai aguardar 5 mim");
-                StartPulse();
-                Thread.Sleep(300000); //5mim
-            }
-            
+            //if (ultimoRegistro)
+            //{
+              
+            //}
+                     
+
             driver.Quit();
             return ultimoRegistro;
         }
@@ -135,6 +134,8 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
     {
         if (driver != null)
         {
+            Sair(driver);
+
             driver.Quit();
         }
         PararPulse();
@@ -149,6 +150,38 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
         }
     }
 }
+
+void Sair(IWebDriver driver)
+{
+    try
+    {
+        IWebElement elementUserToClick = driver.FindElement(By.CssSelector(".user-image"));
+        if (elementUserToClick != null)
+        {
+            elementUserToClick.Click();
+            Thread.Sleep(2000);
+
+            IWebElement elementSairToClick = driver.FindElement(By.XPath("//div[contains(text(), 'Sair')]"));
+            if (elementSairToClick != null)
+            {
+                elementSairToClick.Click();
+                Thread.Sleep(2000);
+
+                IWebElement elementSimToClick = driver.FindElement(By.XPath("//span[contains(text(), 'Sim')]"));
+                if (elementSimToClick != null)
+                {
+                    elementSimToClick.Click();
+                    Thread.Sleep(5000);
+                }
+            }
+        }
+    }
+    catch (Exception e)
+    {
+
+    }
+}
+
 bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
 {
     By horasPSelector = By.CssSelector("p.pm-text-dark-gray");
@@ -176,6 +209,11 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
 }
 void BaterPonto(IWebDriver driver)
 {
+    IWebElement elementToClick = driver.FindElement(By.XPath("//*[contains(text(), 'Utilizar essa localização')]"));
+    elementToClick.Click();
+    
+    Thread.Sleep(3000);
+
     By submitButtonSelector = By.CssSelector("button.pm-primary");
     var submitButtons = driver.FindElements(submitButtonSelector);
     var buttons = driver.FindElements(submitButtonSelector);
@@ -185,6 +223,27 @@ void BaterPonto(IWebDriver driver)
     {
 
         button.Click();
+
+
+        IWebElement element = driver.FindElement(By.XPath("//*[contains(text(), 'Ponto registrado com sucesso!')]"));
+
+        string texto = element.Text;
+
+        // Verifique se o texto contém a frase desejada
+        if (texto.Contains("Ponto registrado com sucesso!"))
+        {
+            Console.WriteLine("O texto 'Ponto registrado com sucesso!' foi encontrado: " + texto);
+        }
+        else
+        {
+            Console.WriteLine("O texto 'Ponto registrado com sucesso!' não foi encontrado.");
+        }
+
+        Console.WriteLine("ponto batido vai aguardar 5 mim");
+        Thread.Sleep(300000); //5mim
+        Sair(driver);
+        StartPulse();
+        
 
         var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
         string[] linhasExistentes = File.ReadAllLines(caminho);
