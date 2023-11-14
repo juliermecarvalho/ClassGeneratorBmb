@@ -115,16 +115,13 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
             }
 
             BaterPonto(driver);
+                       
 
-            var ultimoRegistro = ObterHorasUltimoRegistro(driver, hours);
-            //if (ultimoRegistro)
-            //{
-              
-            //}
-                     
-
-            driver.Quit();
-            return ultimoRegistro;
+            if (driver != null)
+            {
+                driver.Quit();
+            }
+            return true;
         }
 
         return false;
@@ -172,6 +169,10 @@ void Sair(IWebDriver driver)
                 {
                     elementSimToClick.Click();
                     Thread.Sleep(5000);
+                    if (driver != null)
+                    {
+                        driver.Quit();
+                    }
                 }
             }
         }
@@ -223,25 +224,14 @@ void BaterPonto(IWebDriver driver)
     {
 
         button.Click();
-
-
-        IWebElement element = driver.FindElement(By.XPath("//*[contains(text(), 'Ponto registrado com sucesso!')]"));
-
-        string texto = element.Text;
-
-        // Verifique se o texto contém a frase desejada
-        if (texto.Contains("Ponto registrado com sucesso!"))
-        {
-            Console.WriteLine("O texto 'Ponto registrado com sucesso!' foi encontrado: " + texto);
-        }
-        else
-        {
-            Console.WriteLine("O texto 'Ponto registrado com sucesso!' não foi encontrado.");
-        }
-
-        Console.WriteLine("ponto batido vai aguardar 5 mim");
-        Thread.Sleep(300000); //5mim
+               
         Sair(driver);
+
+        Console.WriteLine("ponto batido vai aguardar 20 mim");
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
         StartPulse();
         
 
@@ -259,7 +249,6 @@ void BaterPonto(IWebDriver driver)
             streamWriter.Close();
 
         }
-        Thread.Sleep(60000);
     }
 }
 static bool CheckInternetConnection()
@@ -303,18 +292,18 @@ while (true)
     Random random = new();
     int init = random.Next(35, 40);
     int fim = random.Next(40, 50);
-    int numeroAleatorio =  random.Next(45, 55);
-    int horaInicial = 8;
+    int numeroAleatorio =  0;
+    int horaInicial = 9;
 
     Console.WriteLine("minuto escolhido: " + numeroAleatorio);
-    List<int> horarios = new() { horaInicial, 12, 13, 18 };
+    List<int> horarios = new() { 9, 12, 13, 18 };
 
 
     foreach (var horario in horarios)
     {
         if (horario == 18)
         {
-            numeroAleatorio = random.Next(5, 15);
+            numeroAleatorio = random.Next(5, 20);
         }
         Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
         StartPulse();
