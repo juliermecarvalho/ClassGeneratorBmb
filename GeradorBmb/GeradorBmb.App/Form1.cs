@@ -26,12 +26,8 @@ namespace GeradorBmb.App
             IDictionary<string, string> propertys = new Dictionary<string, string>();
             IDictionary<string, string> propertys2 = new Dictionary<string, string>
             {
-                {"data feriado", "DateTime" },
-                {"descricao", "string"},
-                {"CD USUCADA", "float"},
-                {"data cadastro", "DateTime?"},
-                {"cd usualte", "int?"},
-                {"dt ultalte", "DateTime?"},
+                {"num Entid", "int" },
+                {"group Name", "string"},
 
             };
 

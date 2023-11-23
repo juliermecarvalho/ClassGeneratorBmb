@@ -110,6 +110,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
 
             if (ObterHorasUltimoRegistro(driver, hours))
             {
+                Sair(driver);
                 driver.Quit();
                 return true;
             }
@@ -224,16 +225,9 @@ void BaterPonto(IWebDriver driver)
     {
 
         button.Click();
-               
+        Thread.Sleep(10000);//10 segundos
         Sair(driver);
-
-        Console.WriteLine("ponto batido vai aguardar 20 mim");
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
         StartPulse();
-        
 
         var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
         string[] linhasExistentes = File.ReadAllLines(caminho);
@@ -249,6 +243,13 @@ void BaterPonto(IWebDriver driver)
             streamWriter.Close();
 
         }
+
+        Console.WriteLine("ponto batido vai aguardar 20 mim");
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
+        Thread.Sleep(300000); //5mim
+        
     }
 }
 static bool CheckInternetConnection()
@@ -314,14 +315,7 @@ while (true)
             SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
             var hora = DateTime.Now.Hour;
 #if !DEBUG
-            if (horarios.Contains(hora))
-            {
-                Thread.Sleep(1000);//1segundos
-            }
-            else
-            {
-                Thread.Sleep(180000);//3min
-            }
+            Thread.Sleep(30000);//30segundos
 #endif
         }
 
