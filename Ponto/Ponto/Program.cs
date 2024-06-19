@@ -292,26 +292,16 @@ while (true)
 
         while (!RegistarPonto(horario))
         {
-            //SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
-            Thread.Sleep(30000);
-
+            KeepTeamsOnline();
+            Thread.Sleep(TimeSpan.FromSeconds(10));
         }
         var index = horarios.IndexOf(horario);
         if (index < 3)
         {
-            var diff = horarios[index + 1] - DateTime.Now.TimeOfDay;
-            while(diff.TotalMinutes > 0)
-            {
-                KeepTeamsOnline();
-                if (diff.TotalMinutes > intervalInMinutes)
-                {
-                    Thread.Sleep(TimeSpan.FromMinutes(intervalInMinutes));
-                }
-                else
-                {
-                    Thread.Sleep(TimeSpan.FromMinutes(diff.TotalMinutes));
-                }
-            }
+#if !DEBUG
+            KeepTeamsOnline();
+            Thread.Sleep(TimeSpan.FromMinutes(1));
+#endif
         }
       
     }
@@ -321,11 +311,6 @@ while (true)
     {
         Process.Start("shutdown", "/s /t 0");
     }
-    SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
-    
-    EscrveNoConsole($"Aguardando 1H");
-    TimeSpan umaHora = TimeSpan.FromHours(1);
-    Thread.Sleep(umaHora);
     
     var now = DateTime.Now;
 
@@ -334,6 +319,9 @@ while (true)
         Console.WriteLine("São 19h ou mais tarde. Fechando a aplicação.");
         Environment.Exit(0); // Encerra a aplicação e fecha o console
     }
+    EscrveNoConsole($"Aguardando 1H");
+    TimeSpan umaHora = TimeSpan.FromHours(1);
+    Thread.Sleep(umaHora);
 
 }
 
