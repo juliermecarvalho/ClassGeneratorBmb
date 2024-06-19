@@ -1,46 +1,36 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.ServiceProcess;
 
-IWebDriver Login(int contador, IWebDriver? d = null)
+[DllImport("user32.dll")]
+static extern void mouse_event(uint dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+const uint MOUSEEVENTF_MOVE = 0x0001;
+int intervalInMinutes = 5;
+IWebDriver Login()
 {
     const string url = "https://app2.pontomais.com.br/login";
 
-    IWebDriver driver;
+    var options = new FirefoxOptions();
+    options.SetPreference("geo.prompt.testing", true);
+    options.SetPreference("geo.prompt.testing.allow", true);
+    IWebDriver driver = new FirefoxDriver(options);
+    //else
+    //{
+    //    var options = new ChromeOptions();
+    //    options.AddArgument("--start-maximized");//--headless --start-maximized
+    //    driver = new ChromeDriver();
+    //}
 
-    if (d != null)
-    {
-        driver = d;
-    }
-    else
-    {
-        if (contador % 2 == 0)
-        {
-            var options = new FirefoxOptions();
-            options.AddArgument("--start-maximized");//--headless --start-maximized
-            options.SetPreference("geo.enabled", true);
-            options.SetPreference("geo.prompt.testing", true);
-            options.SetPreference("geo.prompt.testing.allow", true);
-            driver = new FirefoxDriver(options);
-        }
-        else
-        {
-            var options = new ChromeOptions();
-            options.AddArgument("--start-maximized");//--headless --start-maximized
-            driver = new ChromeDriver();
-        }
-
-    }
     try
     {
-        if (d == null)
-        {
-            driver.Navigate().GoToUrl(url);
-        }
+
+
+        driver.Navigate().GoToUrl(url);
+
+        Thread.Sleep(30000);
+
         // Preencher os campos de login e senha
         IWebElement loginInput = driver.FindElement(By.CssSelector("input[placeholder='Nome de usuário / cpf / e-mail']"));
         IWebElement passwordInput = driver.FindElement(By.CssSelector("input[type='password']"));
@@ -60,55 +50,57 @@ IWebDriver Login(int contador, IWebDriver? d = null)
             button.Click();
         }
 
-        Thread.Sleep(10000);
+        Thread.Sleep(60000);
     }
     catch (Exception e)
     {
         if (e.Message.Contains("timed out after"))
         {
-            Login(contador, driver);
+            Login();
         }
         Sair(driver);
 
-        PararPulse();
+        //PararPulse();
     }
 
     return driver;
 }
 
-bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
+bool RegistarPonto(TimeSpan hora)
 {
     IWebDriver? driver = null;
     try
     {
-      //  driver = Login(contador);
+        //driver = Login(contador);
         DateTime hoje = DateTime.Now;
         if (hoje.DayOfWeek == DayOfWeek.Saturday || hoje.DayOfWeek == DayOfWeek.Sunday)
         {
             return true;
         }
 
-        int hora = DateTime.Now.Hour;
-        int minutos = DateTime.Now.Minute;
-        int segundos = DateTime.Now.Second;
-        TimeSpan tempo = new TimeSpan(hora, minutos, segundos);
-        TimeSpan limiteInferior = new TimeSpan(hours, minutes, 0);
-        TimeSpan limiteSuperior = new TimeSpan(hours, (minutes + 20), 0);
+         // Obter a hora atual do sistema.
+        TimeSpan horaAtual = DateTime.Now.TimeOfDay;
+        // Calcular o limite superior do intervalo de 20 minutos.
+        TimeSpan vinteMinutosDepois = hora.Add(new TimeSpan(0, 20, 0));
 
-        if (tempo > limiteSuperior)
+
+        if (horaAtual > vinteMinutosDepois)
         {
             return true;
         }
 
-        if (tempo > limiteInferior && tempo < limiteSuperior)
+
+        if (horaAtual >= hora && horaAtual <= vinteMinutosDepois)
         {
             
-            driver = Login(contador);
+            driver = Login();
+            Thread.Sleep(30000);
+
             const string url = "https://app2.pontomais.com.br/registrar-ponto";
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(15000);
+            Thread.Sleep(30000);
 
-            if (ObterHorasUltimoRegistro(driver, hours))
+            if (ObterHorasUltimoRegistro(driver, hora.Hours))
             {
                 Sair(driver);
                 driver.Quit();
@@ -136,7 +128,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
 
             driver.Quit();
         }
-        PararPulse();
+        //PararPulse();
 
         return false;
     }
@@ -200,7 +192,8 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
             if (dataHoje.Trim().Equals(dataUltimoRegistro.Trim()))
             {
                 var tempo = text.Split("às").LastOrDefault();
-                Console.WriteLine($"horas ultimo registro: {text}");
+
+                EscrveNoConsole($"horas ultimo registro: {text}");
 
                 return tempo.Contains(horas.ToString());
             }
@@ -208,6 +201,14 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
     }
 
     return false;
+}
+
+void EscrveNoConsole(string str)
+{
+    Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+    Console.WriteLine(str);
+    Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+
 }
 void BaterPonto(IWebDriver driver)
 {
@@ -221,36 +222,22 @@ void BaterPonto(IWebDriver driver)
     var buttons = driver.FindElements(submitButtonSelector);
     var button = buttons.LastOrDefault(b => b.Text.Contains("Bater ponto", StringComparison.CurrentCultureIgnoreCase));
 
+#if !DEBUG
     if (button != null)
     {
 
         button.Click();
-        Thread.Sleep(10000);//10 segundos
+        EscrveNoConsole($"ponto batido as {DateTime.Now.ToString("G")} e vai aguardar 20 mim");
+        Thread.Sleep(TimeSpan.FromSeconds(10));//10 segundos
         Sair(driver);
-        StartPulse();
-
-        var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
-        string[] linhasExistentes = File.ReadAllLines(caminho);
-        using (StreamWriter streamWriter = new StreamWriter(caminho))
-        {
-            foreach (string linhaExistente in linhasExistentes)
-            {
-                streamWriter.WriteLine(linhaExistente);
-            }
-
-            streamWriter.WriteLine(DateTime.Now.ToString("G"));
-            streamWriter.Flush();
-            streamWriter.Close();
-
-        }
-
-        Console.WriteLine("ponto batido vai aguardar 20 mim");
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
-        Thread.Sleep(300000); //5mim
+        //StartPulse();
         
+
+        Thread.Sleep(TimeSpan.FromMinutes(20));
+
+
     }
+#endif
 }
 static bool CheckInternetConnection()
 {
@@ -290,37 +277,43 @@ while (true)
     const uint ES_DISPLAY_REQUIRED = 0x00000002;
 
 
-    Random random = new();
-    int init = random.Next(35, 40);
-    int fim = random.Next(40, 50);
-    int numeroAleatorio =  0;
-    int horaInicial = 9;
-
-    Console.WriteLine("minuto escolhido: " + numeroAleatorio);
-    List<int> horarios = new() { 9, 12, 13, 18 };
-
+    List<TimeSpan> horarios = GenerateTimes();
 
     foreach (var horario in horarios)
     {
-        if (horario == 18)
-        {
-            numeroAleatorio = random.Next(5, 20);
-        }
-        Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
-        StartPulse();
-        var contador = 2;
-        while (!RegistarPonto(horario, numeroAleatorio, contador))
-        {
-            //contador++;
-            SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
-            var hora = DateTime.Now.Hour;
-#if !DEBUG
-            Thread.Sleep(30000);//30segundos
-#endif
-        }
+        EscrveNoConsole($"Horario: {horario}");
+    }
 
-        contador = 2;
-        numeroAleatorio = 0;
+    foreach (var horario in horarios)
+    {
+   
+        EscrveNoConsole($"proximo horário a bater o ponto => {horario}");
+        SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+
+        while (!RegistarPonto(horario))
+        {
+            //SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+            Thread.Sleep(30000);
+
+        }
+        var index = horarios.IndexOf(horario);
+        if (index < 3)
+        {
+            var diff = horarios[index + 1] - DateTime.Now.TimeOfDay;
+            while(diff.TotalMinutes > 0)
+            {
+                KeepTeamsOnline();
+                if (diff.TotalMinutes > intervalInMinutes)
+                {
+                    Thread.Sleep(TimeSpan.FromMinutes(intervalInMinutes));
+                }
+                else
+                {
+                    Thread.Sleep(TimeSpan.FromMinutes(diff.TotalMinutes));
+                }
+            }
+        }
+      
     }
 
     DateTime hoje = DateTime.Now;
@@ -329,61 +322,55 @@ while (true)
         Process.Start("shutdown", "/s /t 0");
     }
     SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
-    Thread.Sleep(900000);//15mim
+    
+    EscrveNoConsole($"Aguardando 1H");
+    TimeSpan umaHora = TimeSpan.FromHours(1);
+    Thread.Sleep(umaHora);
+    
+    var now = DateTime.Now;
 
-
+    if (now.Hour >= 19)
+    {
+        Console.WriteLine("São 19h ou mais tarde. Fechando a aplicação.");
+        Environment.Exit(0); // Encerra a aplicação e fecha o console
+    }
 
 }
 
 
 
 
-Console.WriteLine("FIM!!!");
-Console.ReadLine();
 
-static void PararPulse()
+
+List<TimeSpan> GenerateTimes()
 {
-    try
-    {
-        string serviceName = "PulseSecureService"; // Nome do serviço
+    Random random = new Random();
 
-        ServiceController sc = new ServiceController(serviceName);
+    int minutes = random.Next(0, 30);
+    var entradaAm = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 50, 0).AddMinutes(minutes);
+    var quatrosHoras = random.Next(235, 245);
+    var saidaAm = entradaAm.AddMinutes(quatrosHoras);
 
 
-        if (sc.Status == ServiceControllerStatus.Running)
-        {
-            Console.WriteLine($"Parando o serviço {serviceName}...");
-            sc.Stop();
-            sc.WaitForStatus(ServiceControllerStatus.Stopped);
-            Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
-        }
-    }
-    catch (Exception)
-    {
 
-    }
+    int almoco = random.Next(60, 70);
+    var entradaPm = saidaAm.AddMinutes(almoco);
+
+    int saidaminutes = random.Next(0, 5);
+    EscrveNoConsole($"minutos a mais => {saidaminutes}");
+
+    var minutosSaida = (480 - quatrosHoras) + saidaminutes;
+
+    var saidaPm = entradaPm.AddMinutes(minutosSaida);
+
+    return [entradaAm.TimeOfDay, saidaAm.TimeOfDay, entradaPm.TimeOfDay, saidaPm.TimeOfDay];
 }
 
-
-static void StartPulse()
+void KeepTeamsOnline()
 {
-    try
-    {
-        string serviceName = "PulseSecureService"; // Nome do serviço
+    
+    mouse_event(MOUSEEVENTF_MOVE, 1, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_MOVE, -1, 0, 0, 0);
+    
 
-        ServiceController sc = new ServiceController(serviceName);
-
-
-        if (sc.Status == ServiceControllerStatus.Stopped)
-        {
-            Console.WriteLine($"Iniciando o serviço {serviceName}...");
-            sc.Start();
-            sc.WaitForStatus(ServiceControllerStatus.Running);
-            Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
-        }
-    }
-    catch (Exception)
-    {
-
-    }
 }
