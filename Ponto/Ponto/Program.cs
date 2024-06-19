@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
+using static System.Net.Mime.MediaTypeNames;
 
 IWebDriver Login(int contador, IWebDriver? d = null)
 {
@@ -70,7 +71,7 @@ IWebDriver Login(int contador, IWebDriver? d = null)
         }
         Sair(driver);
 
-        PararPulse();
+        //PararPulse();
     }
 
     return driver;
@@ -136,7 +137,7 @@ bool RegistarPonto(int hours, int minutes = 0, int contador = 0)
 
             driver.Quit();
         }
-        PararPulse();
+        //PararPulse();
 
         return false;
     }
@@ -200,7 +201,8 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
             if (dataHoje.Trim().Equals(dataUltimoRegistro.Trim()))
             {
                 var tempo = text.Split("às").LastOrDefault();
-                Console.WriteLine($"horas ultimo registro: {text}");
+
+                EscrveNoConsole($"horas ultimo registro: {text}");
 
                 return tempo.Contains(horas.ToString());
             }
@@ -208,6 +210,14 @@ bool ObterHorasUltimoRegistro(IWebDriver driver, int horas)
     }
 
     return false;
+}
+
+void EscrveNoConsole(string str)
+{
+    Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+    Console.WriteLine(str);
+    Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+
 }
 void BaterPonto(IWebDriver driver)
 {
@@ -225,26 +235,11 @@ void BaterPonto(IWebDriver driver)
     {
 
         button.Click();
+        EscrveNoConsole($"ponto batido as {DateTime.Now.ToString("G")} e vai aguardar 20 mim");
         Thread.Sleep(10000);//10 segundos
         Sair(driver);
-        StartPulse();
-
-        var caminho = @"C:\Users\ITFOLIV\Downloads\ponto.txt";
-        string[] linhasExistentes = File.ReadAllLines(caminho);
-        using (StreamWriter streamWriter = new StreamWriter(caminho))
-        {
-            foreach (string linhaExistente in linhasExistentes)
-            {
-                streamWriter.WriteLine(linhaExistente);
-            }
-
-            streamWriter.WriteLine(DateTime.Now.ToString("G"));
-            streamWriter.Flush();
-            streamWriter.Close();
-
-        }
-
-        Console.WriteLine("ponto batido vai aguardar 20 mim");
+        //StartPulse();
+        
         Thread.Sleep(300000); //5mim
         Thread.Sleep(300000); //5mim
         Thread.Sleep(300000); //5mim
@@ -296,28 +291,23 @@ while (true)
     int numeroAleatorio =  0;
     int horaInicial = 9;
 
-    Console.WriteLine("minuto escolhido: " + numeroAleatorio);
     List<int> horarios = new() { 9, 12, 13, 18 };
 
 
     foreach (var horario in horarios)
     {
-        if (horario == 18)
-        {
-            numeroAleatorio = random.Next(5, 20);
-        }
-        Console.WriteLine($"Horario: {horario}:{numeroAleatorio}");
-        StartPulse();
+   
+        EscrveNoConsole($"Horario: {horario}:{numeroAleatorio}");
+        //StartPulse();
         var contador = 2;
         while (!RegistarPonto(horario, numeroAleatorio, contador))
         {
             //contador++;
             SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
-            var hora = DateTime.Now.Hour;
-#if !DEBUG
-            Thread.Sleep(30000);//30segundos
-#endif
+            // var hora = DateTime.Now.Hour;
+            Thread.Sleep(60000);//15mim
         }
+       // Thread.Sleep(900000);//15mim
 
         contador = 2;
         numeroAleatorio = 0;
@@ -331,7 +321,13 @@ while (true)
     SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
     Thread.Sleep(900000);//15mim
 
+    var now = DateTime.Now;
 
+    if (now.Hour >= 19)
+    {
+        Console.WriteLine("São 19h ou mais tarde. Fechando a aplicação.");
+        Environment.Exit(0); // Encerra a aplicação e fecha o console
+    }
 
 }
 
@@ -341,49 +337,49 @@ while (true)
 Console.WriteLine("FIM!!!");
 Console.ReadLine();
 
-static void PararPulse()
-{
-    try
-    {
-        string serviceName = "PulseSecureService"; // Nome do serviço
+//static void PararPulse()
+//{
+//    try
+//    {
+//        string serviceName = "PulseSecureService"; // Nome do serviço
 
-        ServiceController sc = new ServiceController(serviceName);
-
-
-        if (sc.Status == ServiceControllerStatus.Running)
-        {
-            Console.WriteLine($"Parando o serviço {serviceName}...");
-            sc.Stop();
-            sc.WaitForStatus(ServiceControllerStatus.Stopped);
-            Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
-        }
-    }
-    catch (Exception)
-    {
-
-    }
-}
+//        ServiceController sc = new ServiceController(serviceName);
 
 
-static void StartPulse()
-{
-    try
-    {
-        string serviceName = "PulseSecureService"; // Nome do serviço
+//        if (sc.Status == ServiceControllerStatus.Running)
+//        {
+//            Console.WriteLine($"Parando o serviço {serviceName}...");
+//            sc.Stop();
+//            sc.WaitForStatus(ServiceControllerStatus.Stopped);
+//            Console.WriteLine($"Status do serviço {serviceName} após parar: {sc.Status}");
+//        }
+//    }
+//    catch (Exception)
+//    {
 
-        ServiceController sc = new ServiceController(serviceName);
+//    }
+//}
 
 
-        if (sc.Status == ServiceControllerStatus.Stopped)
-        {
-            Console.WriteLine($"Iniciando o serviço {serviceName}...");
-            sc.Start();
-            sc.WaitForStatus(ServiceControllerStatus.Running);
-            Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
-        }
-    }
-    catch (Exception)
-    {
+//static void StartPulse()
+//{
+//    try
+//    {
+//        string serviceName = "PulseSecureService"; // Nome do serviço
 
-    }
-}
+//        ServiceController sc = new ServiceController(serviceName);
+
+
+//        if (sc.Status == ServiceControllerStatus.Stopped)
+//        {
+//            Console.WriteLine($"Iniciando o serviço {serviceName}...");
+//            sc.Start();
+//            sc.WaitForStatus(ServiceControllerStatus.Running);
+//            Console.WriteLine($"Status do serviço {serviceName} após iniciar: {sc.Status}");
+//        }
+//    }
+//    catch (Exception)
+//    {
+
+//    }
+//}
