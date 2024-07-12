@@ -172,7 +172,11 @@ void Sair(IWebDriver driver)
     }
     catch (Exception e)
     {
-
+        Thread.Sleep(5000);
+        if (driver != null)
+        {
+            driver.Quit();
+        }
     }
 }
 
