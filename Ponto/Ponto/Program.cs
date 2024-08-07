@@ -214,6 +214,7 @@ void EscrveNoConsole(string str)
     Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
 
 }
+
 void BaterPonto(IWebDriver driver)
 {
     IWebElement elementToClick = driver.FindElement(By.XPath("//*[contains(text(), 'Utilizar essa localização')]"));
@@ -236,13 +237,11 @@ void BaterPonto(IWebDriver driver)
         Sair(driver);
         //StartPulse();
         
-
         Thread.Sleep(TimeSpan.FromMinutes(20));
-
-
     }
 #endif
 }
+
 static bool CheckInternetConnection()
 {
     try
@@ -256,8 +255,6 @@ static bool CheckInternetConnection()
         return false;
     }
 }
-
-
 
 while (true)
 {
@@ -286,6 +283,8 @@ while (true)
     foreach (var horario in horarios)
     {
         EscrveNoConsole($"Horario: {horario}");
+        KeepTeamsOnline();
+
     }
 
     foreach (var horario in horarios)
@@ -297,13 +296,13 @@ while (true)
         while (!RegistarPonto(horario))
         {
             KeepTeamsOnline();
-            Thread.Sleep(TimeSpan.FromSeconds(10));
+            Thread.Sleep(TimeSpan.FromMinutes(1));
         }
+        KeepTeamsOnline();
         var index = horarios.IndexOf(horario);
         if (index < 3)
         {
-#if !DEBUG
-            KeepTeamsOnline();
+#if !DEBUG            
             Thread.Sleep(TimeSpan.FromMinutes(1));
 #endif
         }
@@ -328,11 +327,6 @@ while (true)
     Thread.Sleep(umaHora);
 
 }
-
-
-
-
-
 
 List<TimeSpan> GenerateTimes()
 {
@@ -360,9 +354,7 @@ List<TimeSpan> GenerateTimes()
 
 void KeepTeamsOnline()
 {
-    
     mouse_event(MOUSEEVENTF_MOVE, 1, 0, 0, 0);
     mouse_event(MOUSEEVENTF_MOVE, -1, 0, 0, 0);
-    
 
 }
